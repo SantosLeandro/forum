@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\CategoryRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
 class Category
@@ -15,6 +17,14 @@ class Category
 
     #[ORM\Column(length: 50)]
     private ?string $title = null;
+
+    #[ORM\OneToMany(targetEntity: Forum::class, mappedBy: 'category')]
+    private $forums;
+
+    public function __construct()
+    {
+        $this->forums = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -31,5 +41,10 @@ class Category
         $this->title = $title;
 
         return $this;
+    }
+
+    public function getForums(): Collection
+    {
+        return $this->forums;
     }
 }

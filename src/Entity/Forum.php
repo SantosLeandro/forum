@@ -19,6 +19,9 @@ class Forum
     #[ORM\Column(length: 255)]
     private ?string $description = null;
 
+    #[ORM\ManyToOne(targetEntity:Category::class, inversedBy:'forums')]
+    private $category;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -45,6 +48,17 @@ class Forum
     {
         $this->description = $description;
 
+        return $this;
+    }
+
+    public function getCategory()
+    {
+        return $this->category;
+    }
+
+    public function setCategory(Category $category): self
+    {
+        $this->category = $category;
         return $this;
     }
 }
