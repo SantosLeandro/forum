@@ -33,9 +33,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'forum', targetEntity: Topic::class)]
     private Collection $topics;
 
+    #[ORM\OneToMany(mappedBy: 'post', targetEntity: Post::class)]
+    private Collection $posts;
+
+
     public function __construct()
     {
         $this->topics = new ArrayCollection();
+        $this->posts = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -106,5 +111,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+
+    public function getTopics(): Collection
+    {
+        return $this->topics;
+    }
+
+    public function getPosts(): Collection
+    {
+        return $this->posts;
     }
 }
