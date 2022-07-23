@@ -6,6 +6,8 @@ use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`users`')]
@@ -27,6 +29,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\Column]
     private ?string $password = null;
+
+    #[ORM\OneToMany(mappedBy: 'forum', targetEntity: Topic::class)]
+    private Collection $topics;
+
+    public function __construct()
+    {
+        $this->topics = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {

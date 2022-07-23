@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ForumRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ForumRepository::class)]
@@ -21,6 +23,14 @@ class Forum
 
     #[ORM\ManyToOne(targetEntity:Category::class, inversedBy:'forums')]
     private $category;
+
+    #[ORM\OneToMany(mappedBy: 'forum', targetEntity: Topic::class)]
+    private Collection $topics;
+
+    public function __construct()
+    {
+        $this->topics = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -59,6 +69,36 @@ class Forum
     public function setCategory(Category $category): self
     {
         $this->category = $category;
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Topic>
+     */
+    public function getTopics(): Collection
+    {
+        return $this->topics;
+    }
+
+    public function addTopic(Topic $topic): self
+    {
+        if (!$this->topics->contains($topic)) {
+            $this->topics[] = $topic;
+            $topic->setForum($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTopic(Topic $topic): self
+    {
+        if ($this->topics->removeElement($topic)) {
+            // set the owning side to null (unless already changed)
+            if ($topic->getForum() === $this) {
+                $topic->setForum(null);
+            }
+        }
+
         return $this;
     }
 }
