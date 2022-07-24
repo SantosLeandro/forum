@@ -10,6 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Table(name: 'posts')]
 class Post
 {
+    use TimeStamp;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column()]
