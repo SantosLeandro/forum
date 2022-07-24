@@ -11,6 +11,8 @@ use Doctrine\Common\Collections\Collection;
 #[ORM\Table(name: 'categories')]
 class Category
 {
+    use TimeStamp;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column()]

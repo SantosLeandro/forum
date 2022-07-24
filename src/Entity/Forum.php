@@ -11,6 +11,8 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Table(name: 'forums')]
 class Forum
 {
+    use TimeStamp;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column()]
