@@ -19,9 +19,11 @@ class Forum
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
+    #[Assert\NotBlank]
     private ?string $title = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
     private ?string $description = null;
 
     #[ORM\ManyToOne(targetEntity:Category::class, inversedBy:'forums')]
