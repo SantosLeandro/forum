@@ -12,9 +12,11 @@
     {% for category in categories %}
         <h3>  {{ category.title }} </h3>
         {% for forum in category.getForums %}
+            <a href='/forum/{{ forum.id }}'
             <b> {{ forum.title }} </b><br>
             <span> {{ forum.description }} </span>
             <span> Tópicos: {{ forum.getTopics|length }} </span>
+            </a>
         {% endfor %}
         <hr>
     {% endfor %}
