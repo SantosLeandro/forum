@@ -22,16 +22,32 @@ class UserController extends AbstractController
         ]);
     }
 
-    #[Route('/user.create',methods:['POST'], name: 'app_user_create')]
-    public function create(Request $request, 
+    #[Route('/login', methods:['GET','POST'], name: 'app_user_login')]
+    public function login(Request $request)
+    {
+        $contents = $request->getContent();
+        if($contents) {
+            
+        }
+        return $this->render('/user/login.html.twig');
+    }
+    
+    #[Route('user.create', methods:['GET'], name: 'app_user_create')]
+    public function create()
+    {
+        return $this->render('/user/create.html.twig');
+    }
+
+    #[Route('/user.store',methods:['POST'], name: 'app_user_store')]
+    public function store(Request $request, 
                             ValidatorInterface $validator, 
                             UserPasswordHasherInterface $hasher, 
                             ManagerRegistry $doctrine): JsonResponse
     {
-        $content = json_decode($request->getContent());
-        $username = $content->username;
-        $email = $content->email;
-        $plainPassword = $content->password;
+        $content = $request->request;
+        $username = $content->get('username');
+        $email = $content->get('email');
+        $plainPassword = $content->get('password');
         $user = new User();
         $user->setEmail($email);
         $user->setUsername($username);
@@ -49,6 +65,7 @@ class UserController extends AbstractController
         $entityManager->persist($user);
         $entityManager->flush();
         
-        return $this->json(['message'=>'create user']);
+        return $this->render('user/login.html.twig');
+        
     }
 }
