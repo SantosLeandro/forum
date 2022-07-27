@@ -1,0 +1,17 @@
+{% extends "./base.html.twig" %}
+
+
+{% block title %}Topics -  {% endblock %}
+{% block head %}
+    {{ parent() }}
+    <style type="text/css">
+        .important { color: #336699; }
+    </style>
+{% endblock %}
+{% block body %}
+    {% for topic in topics %}
+        <h3> {{ topic.title }} </h3>
+        <span>Autor: {{ topic.getUser.username }} | criado: {{ topic.getCreatedAt|date('Y-m-d H:m')}}</span>
+        <hr>
+    {% endfor %}
+{% endblock %}
