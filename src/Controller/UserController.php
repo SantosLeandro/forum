@@ -25,15 +25,21 @@ class UserController extends AbstractController
     #[Route('/login', methods:['GET','POST'], name: 'app_user_login')]
     public function login(Request $request)
     {
-        if(!$this->isCsrfTokenValid('login', $request->request->get('token'))) {
-            return $this->render('/user/login.html.twig',['message'=>'error']);
-        }
         $contents = $request->getContent();
         if($contents) {
-           
+           if(!$this->isCsrfTokenValid('login', $request->request->get('token'))) {
+                return $this->render('/user/login.html.twig',['message'=>'error csrf']);
+            }
+
         }
         return $this->render('/user/login.html.twig');
     }
+
+    #[Route('/logout', name: 'app_user_logout')]
+    public function logout()
+    {
+        
+    }   
     
     #[Route('user.create', methods:['GET'], name: 'app_user_create')]
     public function create()
