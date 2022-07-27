@@ -1,0 +1,31 @@
+{% extends "./base.html.twig" %}
+
+{% block title %}Sign In{% endblock %}
+{% block head %}
+    {{ parent() }}
+    <style type="text/css">
+        .important { color: #336699; }
+    </style>
+{% endblock %}
+{% block body %}
+    <h1>New User</h1>
+    <div>
+        <form action="/user.store" method="POST">
+            <div>
+                <input id="" type="email" name="email">
+            </div>
+            <div>
+                <input id="" type="text" name="username">
+            </div>
+            <div>
+                <input id="" type="password" name="password">
+            </div>
+            <div>
+                <input id="" type="password" name="">
+            </div>
+            <div>
+                <input type="submit" value="Submit">
+            </div>
+        </form>
+    </div>
+{% endblock %}
