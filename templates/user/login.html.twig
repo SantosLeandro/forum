@@ -14,7 +14,8 @@
     <h3> {{ message }} </h3>
     {% endif %}
     <div>
-        <form action="/user.store" method="POST">
+        <form action="/login" method="POST">
+            <input type="hidden" name="token" value="{{ csrf_token('login') }}"/
             <div>
                 <input id="" type="email" name="email">
             </div>
