@@ -11,5 +11,9 @@
 {% block body %}
     {% for category in categories %}
         <h3>  {{ category.title }} </h3>
+        {% for forum in category.getForums %}
+            <b> {{ forum.title }} </b>
+            <span> {{ forum.description }} </span>
+        {% endfor %}
     {% endfor %}
 {% endblock %}
