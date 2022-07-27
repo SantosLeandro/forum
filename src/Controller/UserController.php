@@ -25,9 +25,12 @@ class UserController extends AbstractController
     #[Route('/login', methods:['GET','POST'], name: 'app_user_login')]
     public function login(Request $request)
     {
+        if(!$this->isCsrfTokenValid('login', $request->request->get('token'))) {
+            return $this->render('/user/login.html.twig',['message'=>'error']);
+        }
         $contents = $request->getContent();
         if($contents) {
-            
+           
         }
         return $this->render('/user/login.html.twig');
     }
@@ -42,8 +45,13 @@ class UserController extends AbstractController
     public function store(Request $request, 
                             ValidatorInterface $validator, 
                             UserPasswordHasherInterface $hasher, 
-                            ManagerRegistry $doctrine): JsonResponse
+                            ManagerRegistry $doctrine)
     {
+
+        if(!$this->isCsrfTokenValid('user.store', $request->request->get('token'))) {
+            return $this->render('/user/login.html.twig',['message'=>'error']);
+        }
+
         $content = $request->request;
         $username = $content->get('username');
         $email = $content->get('email');
@@ -65,7 +73,7 @@ class UserController extends AbstractController
         $entityManager->persist($user);
         $entityManager->flush();
         
-        return $this->render('user/login.html.twig');
+        return $this->render('user/login.html.twig',['message'=>'usuário criado']);
         
     }
 }
