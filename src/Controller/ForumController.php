@@ -5,15 +5,16 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
-
+use App\Repository\TopicRepository;
 class ForumController extends AbstractController
 {
-    #[Route('/forums', name: 'app_forum')]
-    public function index(): JsonResponse
+    #[Route('/forum/{id}', name: 'app_forum')]
+    public function index(int $id, TopicRepository $topicRepository)
     {
-        return $this->json([
-            'message' => 'Welcome to your new controller!',
-            'path' => 'src/Controller/ForumController.php',
-        ]);
+        $topics = $topicRepository->findBy(['forum'=>['id'=>$id]]); 
+        return $this->render('topic/index.html.twig', ['topics'=>$topics]);
     }
+
+    
+
 }
