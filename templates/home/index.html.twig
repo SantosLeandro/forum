@@ -12,8 +12,10 @@
     {% for category in categories %}
         <h3>  {{ category.title }} </h3>
         {% for forum in category.getForums %}
-            <b> {{ forum.title }} </b>
+            <b> {{ forum.title }} </b><br>
             <span> {{ forum.description }} </span>
+            <span> Tópicos: {{ forum.getTopics|length }} </span>
         {% endfor %}
+        <hr>
     {% endfor %}
 {% endblock %}
