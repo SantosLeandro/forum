@@ -28,13 +28,13 @@ trait TimeStamp
         $this->updatedAt = new DateTime();
     }
 
-    public function getCreateAt(): DateTime
+    public function getCreatedAt(): DateTime
     {
-        return $this->createdAt();
+        return $this->createdAt;
     }
 
-    public function getUpdateAt(): DateTime
+    public function getUpdatedAt(): DateTime
     {
-        return $this->updatedAt();
+        return $this->updatedAt;
     }
 }
