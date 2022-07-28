@@ -7,6 +7,27 @@
 body {
     font-family: 'Open Sans', sans-serif;
     background: lightgray;
+    margin: 0;
+    padding: 0;
+    font-size: 13px;
+}
+
+.content {
+    width: 80%;
+    margin: auto;
+    background: white;
+    height: 100vh;
+}
+
+main {
+    padding: 10px;
+}
+
+.category {
+}
+
+.category-header {
+    font-size: 15px;
 }
 
 .nav-bar {
@@ -15,7 +36,6 @@ body {
     overflow: hidden;
     margin: 0;
     padding: 0;
-
 }
 
 .nav-bar ul {
