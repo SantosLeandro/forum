@@ -9,9 +9,17 @@
     </style>
 {% endblock %}
 {% block body %}
-    {% for topic in topics %}
-        <h3> {{ topic.title }} </h3>
-        <span>Autor: {{ topic.getUser.username }} | criado: {{ topic.getCreatedAt|date('Y-m-d H:m')}}</span>
+    <p><b> Tópico: {{ posts[0].getTopic.title }} </b></p>
+    {% for post in posts %}
+        <p>Usuário: {{ post.getUser.username }} | data: {{ post.getCreatedAt|date('Y-m-d H:m')}}</p>
+        <p> {{ post.content }} </p>
         <hr>
     {% endfor %}
+    {% if app.user %}
+        <form class="form-login" action="">
+            <input type="text">
+            <textarea id="" name="" cols="30" rows="10"></textarea>
+            <input type="submit" value="Enviar">
+        </form>
+    {% endif %}
 {% endblock %}
