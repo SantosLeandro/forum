@@ -1,0 +1,58 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
+
+* {
+    
+}
+
+body {
+    font-family: 'Open Sans', sans-serif;
+    background: lightgray;
+}
+
+.nav-bar {
+    background: black;
+    color: white;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+
+}
+
+.nav-bar ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: black;
+}
+
+.nav-bar li {
+   list-style-type: none;
+   float: left;
+}
+
+.nav-bar li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none; 
+}
+
+.nav-bar a:link {
+    text-decoration: none;
+    color: white;
+}
+
+.nav-bar a:hover {
+    background: #111;
+}
+
+.form-login {
+    width: 300px;
+}
+
+.form-login input label {
+    width: 100%;
+    display: inline-block
+}
