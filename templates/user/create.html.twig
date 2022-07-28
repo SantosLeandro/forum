@@ -13,16 +13,16 @@
         <form action="/user.store" method="POST">
             <input type="hidden" name="token" value="{{ csrf_token('user.store') }}"/
             <div>
-                <input id="" type="email" name="email">
+                <input id="" type="email" name="email" placeholder="email@email.com">
             </div>
             <div>
-                <input id="" type="text" name="username">
+                <input id="" type="text" name="username" placeholder="username">
             </div>
             <div>
-                <input id="" type="password" name="password">
+                <input id="" type="password" name="password" placeholder="password">
             </div>
             <div>
-                <input id="" type="password" name="">
+                <input id="" type="password" name="" placeholder="password">
             </div>
             <div>
                 <input type="submit" value="Submit">
