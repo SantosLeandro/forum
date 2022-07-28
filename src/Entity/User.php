@@ -42,10 +42,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Assert\NotBlank, Assert\Length(min:2, max:180)]
     private ?string $username = null;
 
-    #[ORM\OneToMany(mappedBy: 'forum', targetEntity: Topic::class)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Topic::class)]
     private Collection $topics;
 
-    #[ORM\OneToMany(mappedBy: 'post', targetEntity: Post::class)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Post::class)]
     private Collection $posts;
 
 
