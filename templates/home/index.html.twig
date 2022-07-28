@@ -10,7 +10,10 @@
 {% endblock %}
 {% block body %}
     {% for category in categories %}
-        <h3>  {{ category.title }} </h3>
+        <div class="category">
+        <div class="category-header">
+        <b>  {{ category.title }} </b>
+        </div>
         {% for forum in category.getForums %}
             <a href='/forum/{{ forum.id }}'
             <b> {{ forum.title }} </b><br>
@@ -18,6 +21,7 @@
             <span> Tópicos: {{ forum.getTopics|length }} </span>
             </a>
         {% endfor %}
+        </div>
         <hr>
     {% endfor %}
 {% endblock %}
