@@ -12,7 +12,7 @@ class ForumController extends AbstractController
     public function index(int $id, TopicRepository $topicRepository)
     {
         $topics = $topicRepository->findBy(['forum'=>['id'=>$id]]); 
-        return $this->render('forum/index.html.twig', ['topics'=>$topics]);
+        return $this->render('forum/index.html.twig', ['topics'=>$topics, 'forum_id'=>$id]);
     }
 
     
