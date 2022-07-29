@@ -16,7 +16,7 @@ body {
     width: 80%;
     margin: auto;
     background: white;
-    height: 100vh;
+    box-sizing: content-box;
 }
 
 main {
@@ -66,6 +66,31 @@ main {
 
 .nav-bar a:hover {
     background: #111;
+}
+
+input {
+
+}
+
+.form {
+    width: auto;
+    padding: 5px;
+    margin: 5px;
+    display: block;
+}
+
+.form div {
+    margin: 5px;
+}
+
+.form input {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.form textarea {
+    width:100%;
+    box-sizing: border-box;
 }
 
 .form-login {
