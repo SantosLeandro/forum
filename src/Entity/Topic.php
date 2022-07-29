@@ -10,12 +10,13 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: TopicRepository::class)]
 #[ORM\Table(name: 'topics')]
+#[ORM\HasLifecycleCallbacks]
 class Topic
 {
     use TimeStamp;
 
     #[ORM\Id]
-    #[ORM\GeneratedValue]
+    #[ORM\GeneratedValue (strategy:'SEQUENCE')]
     #[ORM\Column()]
     private ?int $id = null;
 
