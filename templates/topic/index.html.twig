@@ -9,16 +9,26 @@
     </style>
 {% endblock %}
 {% block body %}
+    <a href="/">Home </a> > <a href="/forum/{{ topic.getForum.getId }}"> {{ topic.getForum.getTitle }} </a>
     <p><b> Tópico: {{ posts[0].getTopic.title }} </b></p>
     {% for post in posts %}
-        <p>Usuário: {{ post.getUser.username }} | data: {{ post.getCreatedAt|date('Y-m-d H:m')}}</p>
-        <p> {{ post.content|raw }} </p>
+    <div class="post-item">
+        <div class="post-user">
+            <p>Usuário<br> {{ post.getUser.username }} </p>
+        </div>
+        <div>
+            <p> Mensagem publicada em {{ post.getUpdatedAt|date('Y-m-d H:i')}} 
+            <hr>
+            <p> {{ post.content|raw }} </p>
+            <hr>
+        </div>
         <hr>
+    </div>
     {% endfor %}
     {% if app.user %}
-        <form class="form" action="">
-            <input type="text">
-            <textarea id="" name="" cols="30" rows="10"></textarea>
+        <form class="form" action="/post.store" method="POST">
+            <input type="hidden" name="topic_id" value={{ topic.getId }}>
+            <textarea id="" name="content" cols="30" rows="10"></textarea>
             <input type="submit" value="Enviar">
         </form>
     {% endif %}
