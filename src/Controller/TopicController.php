@@ -12,6 +12,7 @@ use App\Repository\PostRepository;
 use App\Repository\TopicRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use App\Service\BbCode;
 
 class TopicController extends AbstractController
 {
@@ -29,7 +30,8 @@ class TopicController extends AbstractController
                             ValidatorInterface $validator,
                             TopicRepository $topicRepository, 
                             PostRepository $postRepository, 
-                            ForumRepository $forumRepository)
+                            ForumRepository $forumRepository,
+                            BbCode $bbCode)
     {
         $title = $request->request->get('title');
         $content = $request->request->get('content');
@@ -47,9 +49,11 @@ class TopicController extends AbstractController
             return new Response('todo error topic invalid');
         }
 
+        $htmlContent = $bbCode->codeToHtml($content); 
+
         $post = new Post(); 
         $post->setUser($user);
-        $post->setContent($content);
+        $post->setContent($htmlContent);
         $post->setTopic($topic);
         
         $errors = $validator->validate($post);
