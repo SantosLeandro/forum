@@ -108,4 +108,9 @@ class Topic
 
         return $this;
     }
+
+    public function getLastPost(): Post
+    {
+        return $this->posts->last();
+    }
 }
