@@ -16,12 +16,10 @@
         {% endblock %}
     </head>
     <body>
-        <div class="content">
         {{ include('components/navbar.html.twig') }}
-            <div class="main">
-                {% block body %}{% endblock %}
-            </div>
-        {{ include('components/footer.html.twig') }}
+        <div class="main">
+            {% block body %}{% endblock %}
         </div>
+        {{ include('components/footer.html.twig') }}
     </body>
 </html>
