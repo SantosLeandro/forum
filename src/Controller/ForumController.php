@@ -6,14 +6,15 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\TopicRepository;
-use App\Repository\PostRepository;
+use App\Repository\ForumRepository;
 class ForumController extends AbstractController
 {
     #[Route('/forum/{id}', name: 'app_forum')]
-    public function index(int $id, TopicRepository $topicRepository)
+    public function index(int $id, TopicRepository $topicRepository, ForumRepository $forumRepository)
     {
         $topics = $topicRepository->findBy(['forum'=>['id'=>$id]],['updatedAt'=>'DESC']); 
-        return $this->render('forum/index.html.twig', ['topics'=>$topics, 'forum_id'=>$id]);
+        $forum = $forumRepository->findOneBy(['id'=>$id]);
+        return $this->render('forum/index.html.twig', ['topics'=>$topics, 'forum'=>$forum]);
     }
 
     
