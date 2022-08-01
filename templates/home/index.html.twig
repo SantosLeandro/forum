@@ -14,21 +14,25 @@
             <div class="category-header">
                 <b>  {{ category.title }} </b>
             </div>
+            <div class="forum-grid bg-gray font-bold">
+                <div>Fórum</div>
+                <div>Tópicos</div>
+                <div>Mensagens</div>
+                <div>Última mensagem</div>
+            </div>
             {% for forum in category.getForums %}
                 <div class="forum-grid">
                     <div>
-                        <a href='/forum/{{ forum.id }}'>
-                        <b> {{ forum.title }} </b><br>
+                        <a class="forum-link" href='/forum/{{ forum.id }}'>{{ forum.title }}</a><br> 
                         <span> {{ forum.description }} </span>
-                        </a>
                     </div>
                     <div>
-                        <span> Tópicos {{ forum.getTopics|length }} </span>
+                        <span> {{ forum.getTopics|length }} </span>
                     </div>
                     <div>
-                        <span> Posts </span>
-                    </div>
-                    
+                        <span> todo </span>
+                    </div> 
+                    <div> Não disponível </div>
                 </div>
             {% endfor %}
             </div>

@@ -1,0 +1,14 @@
+<form class="form" action="/topic.store" method="POST">
+    <div>
+    <h5> Novo Tópico </h5>
+    <input type="hidden" name="token" value="{{ csrf_token('topic.store') }}"/>
+    <input type="hidden" name="forum_id" value={{ forum_id }} />
+    <input type="text" name="title">
+    </div>
+    <div>
+    <textarea id="" name="content" cols="30" rows="10"></textarea>
+    </div>
+    <div>
+    <input type="submit" value="Enviar">
+    </div>
+</form>
