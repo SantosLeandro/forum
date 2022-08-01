@@ -108,15 +108,4 @@ class Forum
 
         return $this;
     }
-
-    //public function getLastPost(): Post
-    //{
-    //    return $this->lastPost;
-    //}
-    //
-    //public function setLastPost(Post $lastPost): self
-    //{
-    //    $this->lastPost = $lastPost;
-    //    return $this;
-    //}
 }

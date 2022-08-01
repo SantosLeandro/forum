@@ -6,6 +6,7 @@ use App\Repository\TopicRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Exception;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: TopicRepository::class)]
@@ -109,8 +110,10 @@ class Topic
         return $this;
     }
 
-    public function getLastPost(): Post
+    public function getLastPost(): ?Post
     {
-        return $this->posts->last();
+        if($this->posts->count() != 0)
+            return $this->getPosts()->last();
+        return null;
     }
 }
