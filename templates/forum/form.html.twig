@@ -2,7 +2,7 @@
     <div>
     <h5> Novo Tópico </h5>
     <input type="hidden" name="token" value="{{ csrf_token('topic.store') }}"/>
-    <input type="hidden" name="forum_id" value={{ forum_id }} />
+    <input type="hidden" name="forum_id" value={{ forum.getId }} />
     <input type="text" name="title">
     </div>
     <div>

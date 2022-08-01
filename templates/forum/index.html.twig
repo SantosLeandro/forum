@@ -4,15 +4,11 @@
 {% block title %}Topics -  {% endblock %}
 {% block head %}
     {{ parent() }}
-    <style type="text/css">
-        .important { color: #336699; }
-    </style>
 {% endblock %}
 {% block body %}
-    <div class="m-10">
-    <a href="/">Home </a> > <a href="/forum/{{ topics[0].getForum.getId }}"> {{ topics[0].getForum.getTitle }} </a>
-    </div>
+    <div class="rounded-border">
     <div class="title-header">
+        <a class="forum-link" href="/"> Fórum </a> > <a class="forum-link" href="/forum/{{ forum.getId }}"> {{ forum.getTitle }} </a>
         <div class="float-right">
              Páginas
         </div>
@@ -20,27 +16,30 @@
     </div>
     <div class="topic-item bg-gray font-bold">
         <div>Tópico</div>
-        <div>Autor</div>
-        <div>Respostas</div>
-        <div>Nota</div>
+        <div class="text-center">Autor</div>
+        <div class="text-center">Respostas</div>
+        <div class="text-center">Nota</div>
         <div>Última mensagem</div>
     </div>
 
     {% for topic in topics %}
-        <div class="topic-item">
-        <div>
-             <a class="forum-link" href="/topic/{{topic.id}}"> {{ topic.title }} </a>
+        <div class="topic-item topic-row">
+            <div>
+                 <a class="forum-link" href="/topic/{{topic.id}}"> {{ topic.title }} </a>
+            </div>
+            <div class="text-center">
+                <span>{{ topic.getUser.username }} </span>
+            </div>
+            <div class="text-center"> 0 </div>
+            <div class="text-center votes-color"> <i class='bx bxs-star'></i> <i class='bx bxs-star'></i> <i class='bx bxs-star-half'></i> </div>
+            <div>
+                {% if topic.getLastPost|length %}
+                <span> {{ topic.getUpdatedAt|date('Y-m-d H:i')}} <br>Por: {{ topic.getLastPost.getUser.username }} </span>
+                {% endif %}
+            </div>
         </div>
-        <div>
-            <span>{{ topic.getUser.username }} </span>
-        </div>
-        <div> 0 </div>
-        <div> 0 </div>
-        <div>
-            <span> {{ topic.getUpdatedAt|date('Y-m-d H:i')}} <br>Por: {{ topic.getLastPost.getUser.username }} </span>
-        </div>
+    {% endfor %} 
     </div>
-    {% endfor %}
     {% if app.user %}
         {{ include('forum/form.html.twig') }}
     {% endif %}

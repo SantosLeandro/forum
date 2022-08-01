@@ -4,18 +4,16 @@
 {% block title %}Sign In{% endblock %}
 {% block head %}
     {{ parent() }}
-    <style type="text/css">
-        .important { color: #336699; }
-    </style>
 {% endblock %}
 {% block body %}
+    <div class="login">
     <h1>Login</h1>
     {% if message is defined %}
     <h3> {{ message }} </h3>
     {% endif %}
-    <div>
-        <form class="form-login" action="/login" method="POST">
-            <input type="hidden" name="token" value="{{ csrf_token('login') }}"/
+    <div class="rounded-border form-login p-5">
+        <form class="form" action="/login" method="POST">
+            <input type="hidden" name="token" value="{{ csrf_token('login') }}"/>
             <div>
                 <label for="">Email</label><br>
                 <input id="" type="email" name="_username">
@@ -28,5 +26,6 @@
                 <input type="submit" value="Submit">
             </div>
         </form>
+    </div>
     </div>
 {% endblock %}
