@@ -16,7 +16,7 @@ class Forum
     use TimeStamp;
 
     #[ORM\Id]
-    #[ORM\GeneratedValue (strategy:'SEQUENCE')]
+    #[ORM\GeneratedValue (strategy:'IDENTITY')]
     #[ORM\Column()]
     private ?int $id = null;
 
@@ -33,6 +33,9 @@ class Forum
 
     #[ORM\OneToMany(mappedBy: 'forum', targetEntity: Topic::class)]
     private Collection $topics;
+
+    #[ORM\Column]
+    private ?int $position;
 
     public function __construct()
     {
@@ -107,5 +110,16 @@ class Forum
         }
 
         return $this;
+    }
+
+    public function getPosition(): int
+    {
+        return $this->position;
+    }
+
+    public function setPosition(int $position): self
+    {
+        $this->position = $position;
+        return $this; 
     }
 }

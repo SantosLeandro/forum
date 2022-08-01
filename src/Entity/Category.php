@@ -16,7 +16,7 @@ class Category
     use TimeStamp;
 
     #[ORM\Id]
-    #[ORM\GeneratedValue (strategy:'SEQUENCE')]
+    #[ORM\GeneratedValue (strategy:'IDENTITY')]
     #[ORM\Column()]
     private ?int $id = null;
 
@@ -26,6 +26,9 @@ class Category
 
     #[ORM\OneToMany(targetEntity: Forum::class, mappedBy: 'category')]
     private $forums;
+
+    #[ORM\Column]
+    private ?int $position;
 
     public function __construct()
     {
@@ -52,5 +55,16 @@ class Category
     public function getForums(): Collection
     {
         return $this->forums;
+    }
+
+    public function getPosition(): int
+    {
+        return $this->position;
+    }
+
+    public function setPosition(int $position): self
+    {
+        $this->position = $position;
+        return $this; 
     }
 }

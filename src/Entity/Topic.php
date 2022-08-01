@@ -17,7 +17,7 @@ class Topic
     use TimeStamp;
 
     #[ORM\Id]
-    #[ORM\GeneratedValue (strategy:'SEQUENCE')]
+    #[ORM\GeneratedValue (strategy:'IDENTITY')]
     #[ORM\Column()]
     private ?int $id = null;
 
