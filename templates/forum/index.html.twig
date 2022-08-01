@@ -9,21 +9,37 @@
     </style>
 {% endblock %}
 {% block body %}
-
+    <div class="m-10">
     <a href="/">Home </a> > <a href="/forum/{{ topics[0].getForum.getId }}"> {{ topics[0].getForum.getTitle }} </a>
+    </div>
+    <div class="title-header">
+        <div class="float-right">
+             Páginas
+        </div>
+
+    </div>
+    <div class="topic-item bg-gray font-bold">
+        <div>Tópico</div>
+        <div>Autor</div>
+        <div>Respostas</div>
+        <div>Nota</div>
+        <div>Última mensagem</div>
+    </div>
+
     {% for topic in topics %}
-    <div class="topic-item">
+        <div class="topic-item">
         <div>
-            <p> <a href="/topic/{{topic.id}}"> {{ topic.title }} </a> </p>
+             <a class="forum-link" href="/topic/{{topic.id}}"> {{ topic.title }} </a>
         </div>
         <div>
-            <span>Autor: {{ topic.getUser.username }} </span>
+            <span>{{ topic.getUser.username }} </span>
         </div>
+        <div> 0 </div>
+        <div> 0 </div>
         <div>
-          <span> ultima msg: {{ topic.getUpdatedAt|date('Y-m-d H:i')}} {{ topic.getLastPost.getUser.username }} </span>
+            <span> {{ topic.getUpdatedAt|date('Y-m-d H:i')}} <br>Por: {{ topic.getLastPost.getUser.username }} </span>
         </div>
     </div>
-    <hr>
     {% endfor %}
     {% if app.user %}
         {{ include('forum/form.html.twig') }}
