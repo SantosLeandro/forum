@@ -16,7 +16,7 @@ class Category
     use TimeStamp;
 
     #[ORM\Id]
-    #[ORM\GeneratedValue (strategy:'IDENTITY')]
+    #[ORM\GeneratedValue (strategy:'AUTO')]
     #[ORM\Column()]
     private ?int $id = null;
 
@@ -27,7 +27,7 @@ class Category
     #[ORM\OneToMany(targetEntity: Forum::class, mappedBy: 'category')]
     private $forums;
 
-    #[ORM\Column]
+    #[ORM\Column()]
     private ?int $position;
 
     public function __construct()

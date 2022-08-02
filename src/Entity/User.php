@@ -17,7 +17,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     use TimeStamp;
     #[ORM\Id]
-    #[ORM\GeneratedValue (strategy:'IDENTITY')]
+    #[ORM\GeneratedValue (strategy:'AUTO')]
     #[ORM\Column()]
     private ?int $id = null;
 
