@@ -81,6 +81,23 @@ body {
 
 }
 
+.create-acc-grid {
+    display: grid;
+    width: 300px;
+}
+
+input {
+    box-sizing: border-box;
+    padding: 5px;
+    margin-bottom: 5px;
+}
+
+.form-create-acc input{
+    width: 100%;
+    
+}
+
+
 .content {
     width: 80%;
     margin: auto;

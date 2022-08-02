@@ -25,6 +25,11 @@
         </div>
         <div class="post-header">
             <span> #{{ loop.index }}</span>
+            {% if app.user.roles[0] == 'ROLE_ADMIN' %}
+            <form action="/admin/delete/post" method="POST">
+                <input type="submit" value="apagar"/>
+            </form>
+            {% endif %}
             <hr>
             <span> <b>Mensagem publicada em: </b> {{ post.getUpdatedAt|date('Y-m-d H:i')}} </span> 
             <hr>
@@ -40,10 +45,12 @@
     {% endfor %}
     </div>
     {% if app.user %}
+    <div class="rounded-border">
         <form class="form" action="/post.store" method="POST">
             <input type="hidden" name="topic_id" value={{ topic.getId }}>
             <textarea id="" name="content" cols="30" rows="10"></textarea>
             <input type="submit" value="Enviar">
         </form>
+    </div>
     {% endif %}
 {% endblock %}
