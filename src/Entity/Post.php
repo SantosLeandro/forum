@@ -39,6 +39,9 @@ class Post
 
     public function getContent(): ?string
     {
+        if( $this->deletedAt != null) {
+            return null;
+        }
         return $this->content;
     }
 

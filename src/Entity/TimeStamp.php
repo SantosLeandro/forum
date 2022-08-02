@@ -15,6 +15,9 @@ trait TimeStamp
     #[ORM\Column(name:'updated_at', type:'datetime')]
     private $updatedAt;
 
+    #[ORM\Column(name:'deleted_at', type:'datetime',nullable:'true')]
+    private $deletedAt = null;
+
     #[ORM\PrePersist]
     public function onCreate()
     {
@@ -41,6 +44,17 @@ trait TimeStamp
     public function setUpdatedAt(DateTime $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
+        return $this;
+    }
+
+    public function getDeletedAt(): ?DateTime
+    {
+        return $this->deletedAt;
+    }
+
+    public function setDeletedAt(DateTime $deletedAt): self
+    {
+        $this->deletedAt = $deletedAt;
         return $this;
     }
 }

@@ -10,26 +10,51 @@
 {% endblock %}
 {% block body %}
     <a href="/">Home </a> > <a href="/forum/{{ topic.getForum.getId }}"> {{ topic.getForum.getTitle }} </a>
-    <p><b> Tópico: {{ posts[0].getTopic.title }} </b></p>
+    <div class="rounded-border">
+    <div class="title-header">
+            <b> Tópico: {{ posts[0].getTopic.title }} </b>
+    </div>
     {% for post in posts %}
-    <div class="post-item">
+    <div class="post-item  {{ cycle(['bg_odd', 'bg_even'], loop.index0) }} ">
         <div class="post-user">
-            <p>Usuário<br> {{ post.getUser.username }} </p>
+            <span> {{ post.getUser.username }} </span>
+            <img src="https://i0.wp.com/www.memoriabit.com.br/wp-content/uploads/2018/12/avatar-uol-2.jpg" />
+            <span> Nível </span>
+            <span> {{ post.getUser.roles[0] }} </span>
+
         </div>
-        <div>
-            <p> Mensagem publicada em {{ post.getUpdatedAt|date('Y-m-d H:i')}} 
+        <div class="post-header">
+            <span> #{{ loop.index }}</span>
+            {% if app.user.roles[0] == ( 'ROLE_ADMIN' or 'ROLE_MODERATOR' ) %}
+            <form action="/admin/delete.post" method="POST">
+                <input type="hidden" name="post_id" value="{{ post.id }}"/>
+                <input type="submit" value="apagar"/>
+            </form>
+            {% endif %}
             <hr>
+            <span> <b>Mensagem publicada em: </b> {{ post.getUpdatedAt|date('Y-m-d H:i')}} </span> 
+            <hr>
+        </div>
+        <div class="post-content">
+            {% if post.deletedAt != null %}
+                <b class="deleted-post"> Mensagem Apagada pelo moderador </b>
+            {% endif %}
             <p> {{ post.content|raw }} </p>
-            <hr>
         </div>
-        <hr>
+        <div class="post-footer">
+            <hr>
+            <span> footer </span>
+        </div>
     </div>
     {% endfor %}
+    </div>
     {% if app.user %}
+    <div class="rounded-border">
         <form class="form" action="/post.store" method="POST">
             <input type="hidden" name="topic_id" value={{ topic.getId }}>
             <textarea id="" name="content" cols="30" rows="10"></textarea>
             <input type="submit" value="Enviar">
         </form>
+    </div>
     {% endif %}
 {% endblock %}

@@ -8,25 +8,29 @@
     </style>
 {% endblock %}
 {% block body %}
-    <h1>New User</h1>
-    <div>
-        <form action="/user.store" method="POST">
-            <input type="hidden" name="token" value="{{ csrf_token('user.store') }}"/
-            <div>
-                <input id="" type="email" name="email" placeholder="email@email.com">
-            </div>
-            <div>
-                <input id="" type="text" name="username" placeholder="username">
-            </div>
-            <div>
-                <input id="" type="password" name="password" placeholder="password">
-            </div>
-            <div>
-                <input id="" type="password" name="" placeholder="password">
-            </div>
-            <div>
-                <input type="submit" value="Submit">
-            </div>
-        </form>
+    <div class="create-acc-grid">
+        <div> </div>
+        <div>
+            <h1>New User</h1>
+            <form class="form-create-acc" action="/user.store" method="POST">
+                <input type="hidden" name="token" value="{{ csrf_token('user.store') }}"/>
+                <div>
+                    <input id="" type="email" name="email" placeholder="email@email.com">
+                </div>
+                <div>
+                    <input id="" type="text" name="username" placeholder="username">
+                </div>
+                <div>
+                    <input id="" type="password" name="password" placeholder="password">
+                </div>
+                <div>
+                    <input id="" type="password" name="" placeholder="password">
+                </div>
+                <div>
+                    <input type="submit" value="Submit">
+                </div>
+            </form>
+        </div>
+        <div></div>
     </div>
 {% endblock %}
