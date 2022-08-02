@@ -10,6 +10,8 @@ use App\Repository\CategoryRepository;
 use App\Entity\Category;
 use App\Entity\Forum;
 use App\Repository\ForumRepository;
+use App\Repository\PostRepository;
+use DateTime;
 
 class AdminController extends AbstractController
 {
@@ -52,6 +54,20 @@ class AdminController extends AbstractController
         $forumRepository->add($forum, true); 
  
         return $this->render('admin/index.html.twig');
+    }
+
+    #[Route('/admin/delete.post', name: 'app_admin_delete_post')]
+    public function deletePost(Request $request, PostRepository $postRepository)
+    {
+        $post_id = $request->get('post_id');
+        $post = $postRepository->findOneBy(['id'=>$post_id]);
+        $now = new DateTime();
+        $post->setDeletedAt($now);
+        
+        $postRepository->add($post, true);
+
+        return $this->redirect('/topic/'.$post->getTopic()->getId());
+        
     }
 
     
