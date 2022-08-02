@@ -97,6 +97,14 @@ input {
     
 }
 
+.deleted-post {
+    background: red;
+    color: white;
+    margin-top: 10px;
+    height: 10px;
+    padding: 5px;
+}
+
 
 .content {
     width: 80%;
@@ -196,6 +204,7 @@ input {
 .post-content {
     grid-area: post-content;
     min-height: 100px;
+    margin: 5px;
 }
 
 .post-footer {

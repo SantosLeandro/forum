@@ -25,8 +25,9 @@
         </div>
         <div class="post-header">
             <span> #{{ loop.index }}</span>
-            {% if app.user.roles[0] == 'ROLE_ADMIN' %}
-            <form action="/admin/delete/post" method="POST">
+            {% if app.user.roles[0] == ( 'ROLE_ADMIN' or 'ROLE_MODERATOR' ) %}
+            <form action="/admin/delete.post" method="POST">
+                <input type="hidden" name="post_id" value="{{ post.id }}"/>
                 <input type="submit" value="apagar"/>
             </form>
             {% endif %}
@@ -35,6 +36,9 @@
             <hr>
         </div>
         <div class="post-content">
+            {% if post.deletedAt != null %}
+                <b class="deleted-post"> Mensagem Apagada pelo moderador </b>
+            {% endif %}
             <p> {{ post.content|raw }} </p>
         </div>
         <div class="post-footer">
