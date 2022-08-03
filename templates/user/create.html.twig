@@ -29,7 +29,7 @@
                 <div class="avatar-list">
                 {% for avatar in avatars %}
                     <div>
-                        <input name="avatar" type="radio" value="" >
+                        <input name="avatar" type="radio" value="{{avatar.name}}" >
                         <img src="{{url}}{{avatar.name}}"></img>
                         </input>
                     </div>

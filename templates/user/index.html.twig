@@ -6,15 +6,15 @@
     {{ parent() }}
 {% endblock %}
 {% block body %}
-    <div class="login">
+    <div class="">
     {% if message is defined %}
     <h3> {{ message }} </h3>
     {% endif %}
-    <div class="rounded-border form-login">
+    <div class="rounded-border form-regular">
         <div class="title-header">
             <h3>{{ user.username }}</h3>
         </div>
-        <img class="p-10" src="{{avatar_url}}{{user.getAvatar}}"></img>
+        <img class="p-10" src="{{url}}{{user.getAvatar}}"></img>
         <form class="form" action="/user.update" method="POST">
             <input type="hidden" name="token" value="{{ csrf_token('user.store') }}"/>
             <input type="hidden" name="user_id" value="{{ user.id }}"/>
@@ -37,6 +37,16 @@
             <div>
                 <label> Avatar </label><br>
                 <input id="" type="text" name="avatar" value="{{ user.avatar }}">
+                <div class="avatar-list">
+                {% for avatar in avatars %}
+                    <div>
+                        <input name="avatar" type="radio" value="{{avatar.name}}" >
+                        <img src="{{url}}{{avatar.name}}"></img>
+                        </input>
+                    </div>
+                {% endfor %}
+                </div>
+
             <div>
                 <input type="submit" value="Atualizar">
             </div>

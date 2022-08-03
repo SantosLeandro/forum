@@ -18,7 +18,7 @@
     <div class="post-item  {{ cycle(['bg_odd', 'bg_even'], loop.index0) }} ">
         <div class="post-user">
             <span> {{ post.getUser.username }} </span>
-            <img src="https://i0.wp.com/www.memoriabit.com.br/wp-content/uploads/2018/12/avatar-uol-2.jpg" />
+            <img src={{url}}{{post.getUser.avatar}} />
             <span> Nível </span>
             <span> {{ post.getUser.roles[0] }} </span>
 
