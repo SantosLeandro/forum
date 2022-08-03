@@ -16,12 +16,14 @@ use DateTime;
 class AdminController extends AbstractController
 {
     #[Route('/admin', name: 'app_admin')]
-    public function index(CategoryRepository $categoryRepository): Response
+    public function index(CategoryRepository $categoryRepository, ForumRepository $forumRepository): Response
     {
         $categories = $categoryRepository->findAll();
+        $forums = $forumRepository->findAll();
         return $this->render('admin/index.html.twig', [
             'controller_name' => 'AdminController',
-            'categories'=>$categories
+            'categories'=>$categories,
+            'forums'=>$forums
         ]);
     }
     
@@ -35,7 +37,7 @@ class AdminController extends AbstractController
         $category->setPosition($position);
         $categoryRepository->add($category, true);
         
-        return $this->render('admin/index.html.twig');
+        return $this->redirect('/admin');
     }
 
     #[Route('/admin/create.forum', name: 'app_admin_create_forum')]
@@ -53,7 +55,7 @@ class AdminController extends AbstractController
         $forum->setCategory($category);
         $forumRepository->add($forum, true); 
  
-        return $this->render('admin/index.html.twig');
+        return $this->redirect('/admin');
     }
 
     #[Route('/admin/delete.post', name: 'app_admin_delete_post')]
@@ -66,9 +68,30 @@ class AdminController extends AbstractController
         
         $postRepository->add($post, true);
 
-        return $this->redirect('/topic/'.$post->getTopic()->getId());
-        
+        return $this->redirect('/topic/'.$post->getTopic()->getId()); 
     }
+    
+    
+    #[Route('/admin/update.forum', name: 'app_admin_update_forum')]
+    public function updatePost(Request $request, ForumRepository $forumRepository, CategoryRepository $categoryRepository)
+    {
+        $forum_id = $request->get('forum_id');
+        $title = $request->get('title');
+        $description = $request->get('description');
+        $positon = $request->get('position'); 
+        $forum = $forumRepository->findOneBy(['id'=>$forum_id]); 
+        $category_id = $request->get('category_id');
+        $category = $categoryRepository->findOneBy(['id'=>$category_id]);
 
+        $forum->setTitle($title);
+        $forum->setDescription($description);
+        $forum->setPosition($positon);
+        $forum->setCategory($category);
+
+        $forumRepository->add($forum,true);
+
+        return $this->redirect('/admin');
+
+    }
     
 }
