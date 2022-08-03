@@ -18,7 +18,8 @@ class UserController extends AbstractController
     {
         $user = $this->getUser();
         $avatar_url = $this->getParameter('app.avatar_bucket_url');
-        return $this->render('/user/index.html.twig',['user'=>$user,'avatar_url'=>$avatar_url]);
+        $avatars = json_decode(file_get_contents($avatar_url));
+        return $this->render('/user/index.html.twig',['user'=>$user,'url'=>$avatar_url,'avatars'=>$avatars->objects]);
     }
 
     #[Route('/login', methods:['GET','POST'], name: 'app_user_login')]
@@ -64,10 +65,12 @@ class UserController extends AbstractController
         $username = $content->get('username');
         $email = $content->get('email');
         $plainPassword = $content->get('password');
+        $avatar = $content->get('avatar');
         $user = new User();
         $user->setEmail($email);
         $user->setUsername($username);
         $user->setPlainPassword($plainPassword);
+        $user->setAvatar($avatar);
         $errors = $validator->validate($user);
         if(count($errors) > 0) {
             $errorsString = (string)$errors;

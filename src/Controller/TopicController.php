@@ -21,7 +21,8 @@ class TopicController extends AbstractController
     {
         $posts = $postRepository->findBy(['topic'=>['id'=>$id]]);
         $topic = $posts[0]->getTopic();
-        return $this->render('topic/index.html.twig',['posts'=>$posts,'topic'=>$topic]); 
+        $url = $this->getParameter('app.avatar_bucket_url');
+        return $this->render('topic/index.html.twig',['posts'=>$posts,'topic'=>$topic,'url'=>$url]); 
         
     }
 
