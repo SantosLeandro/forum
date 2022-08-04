@@ -6,19 +6,23 @@ use App\Repository\TopicRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Exception;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: TopicRepository::class)]
 #[ORM\Table(name: 'topics')]
+#[ORM\HasLifecycleCallbacks]
 class Topic
 {
     use TimeStamp;
 
     #[ORM\Id]
-    #[ORM\GeneratedValue]
+    #[ORM\GeneratedValue (strategy:'AUTO')]
     #[ORM\Column()]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank, Assert\Length(min:4, max:255)]
     private ?string $title = null;
 
     #[ORM\ManyToOne(targetEntity:Forum::class, inversedBy: 'topics')]
@@ -104,5 +108,12 @@ class Topic
         }
 
         return $this;
+    }
+
+    public function getLastPost(): ?Post
+    {
+        if($this->posts->count() != 0)
+            return $this->getPosts()->last();
+        return null;
     }
 }

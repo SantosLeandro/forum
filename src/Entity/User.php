@@ -12,11 +12,12 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: 'users')]
+#[ORM\HasLifecycleCallbacks]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     use TimeStamp;
     #[ORM\Id]
-    #[ORM\GeneratedValue]
+    #[ORM\GeneratedValue (strategy:'AUTO')]
     #[ORM\Column()]
     private ?int $id = null;
 
@@ -41,13 +42,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Assert\NotBlank, Assert\Length(min:2, max:180)]
     private ?string $username = null;
 
-    #[ORM\OneToMany(mappedBy: 'forum', targetEntity: Topic::class)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Topic::class)]
     private Collection $topics;
 
-    #[ORM\OneToMany(mappedBy: 'post', targetEntity: Post::class)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Post::class)]
     private Collection $posts;
 
-
+    #[ORM\Column(nullable:true)]
+    private ?string $avatar = null;
+    
     public function __construct()
     {
         $this->topics = new ArrayCollection();
@@ -115,7 +118,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getPlaiPassowrd()
+    public function getPlainPassowrd()
     {
         return $this->plainPassword;
     }
@@ -154,5 +157,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getPosts(): Collection
     {
         return $this->posts;
+    }
+
+    public function setAvatar(string $avatar): self
+    {
+        if(!$avatar) {
+            return $this;
+        }
+        $this->avatar = $avatar;
+        return $this;
+    }
+
+    public function getAvatar(): string
+    {
+        if(!$this->avatar) {
+            return 'default.png';
+        }
+        return $this->avatar;
+    }
+
+    public function isModeratorOrAdmin()
+    {   
+        if(in_array('ROLE_MODERATOR',$this->roles) or in_array('ROLE_ADMIN',$this->roles) ){
+            return true;
+        }
+        return false;
     }
 }

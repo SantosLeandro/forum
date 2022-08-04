@@ -1,0 +1,45 @@
+{% extends "./base.html.twig" %}
+
+{% block title %}Sign In{% endblock %}
+{% block head %}
+    {{ parent() }}
+    <style type="text/css">
+        .important { color: #336699; }
+    </style>
+{% endblock %}
+{% block body %}
+    <div class="rounded-border create-acc-grid p-10">
+        <div> </div>
+        <div>
+            <h1>New User</h1>
+            <form class="form-create-acc" action="/user.store" method="POST">
+                <input type="hidden" name="token" value="{{ csrf_token('user.store') }}"/>
+                <div>
+                    <input id="" type="email" name="email" placeholder="email@email.com">
+                </div>
+                <div>
+                    <input id="" type="text" name="username" placeholder="username">
+                </div>
+                <div>
+                    <input id="" type="password" name="password" placeholder="password">
+                </div>
+                <div>
+                    <input id="" type="password" name="" placeholder="password">
+                </div>
+                <div class="avatar-list">
+                {% for avatar in avatars %}
+                    <div>
+                        <input name="avatar" type="radio" value="{{avatar.name}}" >
+                        <img src="{{url}}{{avatar.name}}"></img>
+                        </input>
+                    </div>
+                {% endfor %}
+                </div>
+                <div>
+                    <input type="submit" value="Submit">
+                </div>
+            </form>
+        </div>
+        <div></div>
+    </div>
+{% endblock %}

@@ -1,0 +1,22 @@
+<nav class="nav-bar">
+    <ul>
+        <li>
+            <a href='/'> Home </a>
+        </li>
+    {% if app.user %}
+        <li>
+            <a href='/user'> Perfil </a>
+        <li>
+            <a href='/logout'> Logout </a>
+        </li>
+    {% else %}
+        <li>
+            <a href='/login'> Login </a>
+        </li>
+        <li>
+            <a href='/user.create'> Criar conta </a>
+        </li>
+    {% endif %}
+    </ul>
+</nav>
+

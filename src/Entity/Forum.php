@@ -6,22 +6,26 @@ use App\Repository\ForumRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ForumRepository::class)]
 #[ORM\Table(name: 'forums')]
+#[ORM\HasLifecycleCallbacks]
 class Forum
 {
     use TimeStamp;
 
     #[ORM\Id]
-    #[ORM\GeneratedValue]
+    #[ORM\GeneratedValue (strategy:'AUTO')]
     #[ORM\Column()]
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
+    #[Assert\NotBlank]
     private ?string $title = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
     private ?string $description = null;
 
     #[ORM\ManyToOne(targetEntity:Category::class, inversedBy:'forums')]
@@ -29,6 +33,9 @@ class Forum
 
     #[ORM\OneToMany(mappedBy: 'forum', targetEntity: Topic::class)]
     private Collection $topics;
+
+    #[ORM\Column]
+    private ?int $position;
 
     public function __construct()
     {
@@ -103,5 +110,33 @@ class Forum
         }
 
         return $this;
+    }
+
+    public function getPosition(): int
+    {
+        return $this->position;
+    }
+
+    public function setPosition(int $position): self
+    {
+        $this->position = $position;
+        return $this; 
+    }
+
+    public function getTotalPosts(): int 
+    {
+        $total = 0;
+        foreach($this->getTopics() as $topic) {
+            $total += $topic->getPosts()->count();
+        }
+        return $total;
+    }
+
+    public function getLastTopic(): ?Topic
+    {
+        if($this->topics->count() != 0)
+            return $this->getTopics()->last();
+        return null;
+
     }
 }

@@ -5,19 +5,22 @@ namespace App\Entity;
 use App\Repository\PostRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: PostRepository::class)]
 #[ORM\Table(name: 'posts')]
+#[ORM\HasLifecycleCallbacks]
 class Post
 {
     use TimeStamp;
 
     #[ORM\Id]
-    #[ORM\GeneratedValue]
+    #[ORM\GeneratedValue (strategy:'AUTO')]
     #[ORM\Column()]
     private ?int $id = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Assert\NotBlank]
     private ?string $content = null;
 
     #[ORM\ManyToOne(targetEntity:Topic::class ,inversedBy: 'posts')]
@@ -36,6 +39,9 @@ class Post
 
     public function getContent(): ?string
     {
+        if( $this->deletedAt != null) {
+            return null;
+        }
         return $this->content;
     }
 

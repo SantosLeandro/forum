@@ -1,0 +1,35 @@
+{% extends "./base.html.twig" %}
+
+
+{% block title %}Sign In{% endblock %}
+{% block head %}
+    {{ parent() }}
+{% endblock %}
+{% block body %}
+    <div class="login">
+    <h1>Login</h1>
+    {% if message is defined %}
+    <h3> {{ message }} </h3>
+    {% endif %}
+    {% if error %}
+    <h3> {{ error.messageKey }} </h3>
+    {% endif %}
+
+    <div class="rounded-border form-login p-5">
+        <form class="form" action="/login" method="POST">
+            <input type="hidden" name="token" value="{{ csrf_token('login') }}"/>
+            <div>
+                <label for="">Email</label><br>
+                <input id="" type="email" name="_username">
+            </div>
+            <div>
+                <label for="">Password</label><br>
+                <input id="" type="password" name="_password">
+            </div>
+            <div>
+                <input type="submit" value="LOGIN">
+            </div>
+        </form>
+    </div>
+    </div>
+{% endblock %}

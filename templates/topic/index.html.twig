@@ -1,0 +1,68 @@
+{% extends "./base.html.twig" %}
+
+
+{% block title %}Topics -  {% endblock %}
+{% block head %}
+    {{ parent() }}
+    <style type="text/css">
+        .important { color: #336699; }
+    </style>
+{% endblock %}
+{% block body %}
+    <a href="/">Home </a> > <a href="/forum/{{ topic.getForum.getId }}"> {{ topic.getForum.getTitle }} </a>
+    <div class="rounded-border">
+    <div class="title-header">
+            <b> Tópico: {{ posts[0].getTopic.title }} </b>
+    </div>
+    {% for post in posts %}
+    <div class="post-item  {{ cycle(['bg_odd', 'bg_even'], loop.index0) }} ">
+        <div class="post-user">
+            <span> {{ post.getUser.username }} </span>
+            <img class="post-user-avatar" src={{url}}{{post.getUser.avatar}} />
+            <span> Nível </span>
+            <span> {{ post.getUser.roles[0] }} </span>
+
+        </div>
+        <div class="post-header">
+            <span> #{{ loop.index }}</span>
+            {% if app.user %} 
+                {% if app.user.isModeratorOrAdmin  %}
+                <form action="/admin/delete.post" method="POST">
+                    <input type="hidden" name="post_id" value="{{ post.id }}"/>
+                    <input type="submit" value="apagar"/>
+                </form>
+                {% endif %}
+            {% endif %}
+            <hr>
+            <span> <b>Mensagem publicada em: </b> {{ post.getUpdatedAt|date('Y-m-d H:i')}} </span> 
+            <hr>
+        </div>
+        <div class="post-content">
+            {% if post.deletedAt != null %}
+                <b class="deleted-post"> Mensagem Apagada pelo moderador </b>
+            {% endif %}
+            <p> {{ post.content|raw }} </p>
+        </div>
+        <div class="post-footer">
+            <hr>
+            <span> footer </span>
+        </div>
+    </div>
+    {% endfor %}
+    </div>
+    {% if app.user %}
+    <div class="rounded-border">
+        <div class="form">
+            <button id="boldButton"><b>bold</b></button>
+            <button id="italicButton"><i>italic</i></button>
+            <button id="underlineButton"><u>underline</u></button>
+            <button id="linkButton">link</button>
+        </div>
+        <form class="form" action="/post.store" method="POST">
+            <input type="hidden" name="topic_id" value={{ topic.getId }}>
+            <textarea id="" name="content" cols="30" rows="10"></textarea>
+            <input type="submit" value="Enviar">
+        </form>
+    </div>
+    {% endif %}
+{% endblock %}

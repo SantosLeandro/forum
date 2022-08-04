@@ -6,23 +6,29 @@ use App\Repository\CategoryRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
 #[ORM\Table(name: 'categories')]
+#[ORM\HasLifecycleCallbacks]
 class Category
 {
     use TimeStamp;
 
     #[ORM\Id]
-    #[ORM\GeneratedValue]
+    #[ORM\GeneratedValue (strategy:'AUTO')]
     #[ORM\Column()]
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
+    #[Assert\NotBlank]
     private ?string $title = null;
 
     #[ORM\OneToMany(targetEntity: Forum::class, mappedBy: 'category')]
     private $forums;
+
+    #[ORM\Column()]
+    private ?int $position;
 
     public function __construct()
     {
@@ -49,5 +55,16 @@ class Category
     public function getForums(): Collection
     {
         return $this->forums;
+    }
+
+    public function getPosition(): int
+    {
+        return $this->position;
+    }
+
+    public function setPosition(int $position): self
+    {
+        $this->position = $position;
+        return $this; 
     }
 }

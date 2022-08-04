@@ -1,0 +1,347 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
+
+:root {
+  --blue: #1e90ff;
+  --white: #ffffff;
+  --main-color-a: #aaaa;
+  --main-color-b: #aaab;
+}
+
+* {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+     text-shadow: 1px 1px 1px rgba(0,0,0,0.004);
+     margin: 0;
+     padding: 0;
+}
+
+
+.bg_odd {
+    background: #FFF;
+}
+
+.bg_even {
+    background: #F3F3F3;
+}
+
+.bg-gray {
+    background: #AAA !important;
+    color: #333;
+}
+
+.bg-black {
+    background: #000 !important;
+}
+
+.font-bold {
+    font-weight: bold;
+}
+
+.m-5 {
+    margin: 5px;
+}
+
+.m-10 {
+    margin: 10px;
+}
+
+.p-5 {
+    padding: 5px;
+}
+
+.p-10 {
+    padding: 10px;
+}
+
+.float-left {
+    float: left;
+}
+
+.float-right {
+    float: right;
+}
+
+.align-end {
+    align-items: end;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.votes-color {
+    color: #A80000;
+}
+
+body {
+    font-family: 'Open Sans', sans-serif;
+    background: lightgray;
+    margin: auto;
+    max-width: 80%;
+    font-size: 13px;
+    display: grid;
+    grid-template-areas: "navbar" "content" "footer";
+    grid-template-rows: 50px 1fr auto;
+
+}
+
+.avatar-list {
+    display: grid;
+    grid-template-columns: auto auto auto;
+}
+
+.create-acc-grid {
+    display: grid;
+    width: 500px;
+}
+
+input {
+    box-sizing: border-box;
+    padding: 5px;
+    margin-bottom: 5px;
+}
+
+textarea {
+    padding: 5px;
+}
+
+.form-regular {
+    width: auto !important;
+    padding:10px;
+}
+
+.form-regular > div {
+    margin: auto;
+}
+
+.form-create-acc input{
+    width: 100%;
+    
+}
+
+.deleted-post {
+    background: red;
+    color: white;
+    margin-top: 10px;
+    height: 10px;
+    padding: 5px;
+}
+
+
+.content {
+    width: 80%;
+    margin: auto;
+    background: white;
+}
+
+.footer {
+  grid-area: footer;
+  height: 35px;  
+  margin-bottom: 0px;
+}
+
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.main {
+    background: #FFF;
+    grid-area: content;
+    padding: 20px;
+    min-height: 100vh;
+}
+
+.rounded-border {
+    margin-top:10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    border: 4px solid #333;
+    overflow: hidden;
+    /*box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.2), 0 4px 8px 0 rgba(0, 0, 0, 0.18);*/
+}
+
+.title-header {
+    font-size: 15px;
+    height: 25px;
+    padding: 5px;
+    background-image: linear-gradient(#444, #000);
+    color: #ED9A00;
+}
+
+.forum-grid {
+    display: grid;
+    grid-template-columns: 40% 10% 10% 40%;
+    background: #EEEEEE;
+}
+
+.forum-grid > div {
+    border-left: 1px solid gray;
+    border-bottom: 1px solid gray;
+}
+
+.forum-link{
+    font-size: 15px;
+    font-weight: bold;
+    color: #ED9A00;
+    text-decoration: none;
+}
+
+.forum-description {
+
+}
+
+.forum-grid > div {
+    padding: 5px;
+}
+
+
+/*
+.forum-grid:hover {
+    background: #DDDDDD;
+}
+*/
+.post-item {
+    display: grid;
+    grid-template-rows: auto auto auto;
+    grid-template-columns: 15% auto;
+    grid-template-areas: "post-user post-header" "post-user post-content" "post-user post-footer";
+    /*border-bottom: 2px solid #333;*/
+    column-gap: 5px;
+    /*margin-bottom: 2px;*/
+}
+
+.post-user {
+    grid-area: post-user;
+    display: flex;
+    flex-direction: column;
+    margin-left: 5px;
+    margin-top: 5px;
+    text-align: center;
+    align-items: center;
+}
+
+.post-user-avatar {
+    width: 100px;
+    height: 100px;
+}   
+
+.post-header {
+    grid-area: post-header;
+    margin: 5px;
+}
+
+.post-content {
+    grid-area: post-content;
+    min-height: 100px;
+    margin: 5px;
+}
+
+.post-footer {
+    grid-area: post-footer;
+}
+
+.post-item > div > hr {
+    border-top: 2px dotted gray;
+}
+
+.topic-item {
+    display: grid;
+    grid-template-columns: 40% 10% 10% 10% 30%;
+    background: #EEEEEE;
+}
+
+.topic-item > div {
+    padding: 5px;
+    border-left: 1px solid gray;
+    border-bottom: 1px solid gray;
+}
+
+.topic-row {
+}
+
+.nav-bar {
+    grid-area: navbar;
+    background: black;
+    color: white;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-bar ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: black;
+}
+
+.nav-bar li {
+   list-style-type: none;
+   float: left;
+}
+
+.nav-bar li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none; 
+}
+
+.nav-bar a:link {
+    text-decoration: none;
+    color: white;
+}
+
+.nav-bar a:hover {
+    background: #111;
+}
+
+input {
+
+}
+
+.form {
+    width: auto;
+    padding: 5px;
+    margin: 5px;
+    display: block;
+}
+
+.form div {
+    margin: 5px;
+}
+
+.form input {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.form textarea {
+    width:100%;
+    box-sizing: border-box;
+}
+
+.login {
+    height: 100vh;   
+}
+
+.form-login {
+    width: 300px;
+}
+
+.form-login input label {
+    width: 100%;
+    display: inline-block
+}
+
+
+input[type=submit] {
+    background: #ED9A00;
+    border-radius: 4px;
+    /*border: 2px solid #C28108;*/
+    height: 25px;
+}

@@ -1,0 +1,51 @@
+{% extends "./base.html.twig" %}
+
+
+{% block title %}Forum{% endblock %}
+{% block head %}
+    {{ parent() }}
+    <style type="text/css">
+        .important { color: #336699; }
+    </style>
+{% endblock %}
+{% block body %}
+    {% for category in categories %}
+        <div class="rounded-border">
+            <div class="title-header">
+                <b>  {{ category.title }} </b>
+            </div>
+            <div class="forum-grid bg-gray font-bold">
+                <div>Fórum</div>
+                <div>Tópicos</div>
+                <div>Mensagens</div>
+                <div>Última mensagem</div>
+            </div>
+            {% for forum in category.getForums %}
+                <div class="forum-grid">
+                    <div>
+                        <a class="forum-link" href='/forum/{{ forum.id }}'>{{ forum.title }}</a><br> 
+                        <span> {{ forum.description }} </span>
+                    </div>
+                    <div>
+                        <span> {{ forum.getTopics|length }} </span>
+                    </div>
+                    <div>
+                        <span> {{ forum.getTotalPosts }} </span>
+                    </div> 
+                    {% if forum.getTotalPosts != 0 %}
+                        {% set lastPost = forum.getLastTopic.getLastPost %}
+                        <div> 
+                            <span> {{ lastPost.createdAt|date('Y-m-d H:m')}} </span> <br> 
+                            <span> {{ lastPost.getUser.username }}</span> 
+                        </div>
+                    {% else %}
+                        <div>
+                            <span> 0 </span>
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+            </div>
+        <hr>
+    {% endfor %}
+{% endblock %}

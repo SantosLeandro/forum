@@ -1,0 +1,65 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello AdminController!{% endblock %}
+
+{% block body %}
+    <div class="rounded-border form-regular">
+        <div class="">
+        <h3> Atualizar categoria </h3>
+        {% for category in categories %}
+            <form action="/admin/update.category" method="POST">
+                <input type=text" name="title" value="{{category.title}}"/>
+                <input type="text" name="position" value="{{category.position}}"/>
+                <input type="hidden" name="category_id" value="{{category.id}}">
+                <input class="float-right" type="submit" value="update"/>
+            </form>
+        {% endfor %}
+        </div>
+    </div>
+
+    <div class="rounded-border form-regular">
+        <div class="">
+        <h3> Atualizar Forum </h3>
+        {% for forum in forums %}
+            <form action="/admin/update.forum" method="POST">
+                <input type=text" name="title" value="{{forum.title}}"/>
+                <input type=text" name="description" value="{{forum.description}}"/>
+                <input type="text" name="position" value="{{forum.position}}"/>
+                <select name="category_id" id="category" />
+                {%for category in categories %}
+                    {% if forum.category.id == category.id %}
+                        <option value="{{ category.getId}}" selected="selected">{{category.getTitle}}</option>
+                    {% else %}
+                        <option value="{{ category.getId}}">{{category.getTitle}}</option>
+                    {% endif %}
+                {% endfor %}
+                </select>
+                <input type="hidden" name="forum_id" value="{{forum.id}}">
+                <input class="float-right" type="submit" value="update"/>
+            </form>
+        {% endfor %}
+        </div>
+    </div>
+
+
+   <form action="/admin/create.category" method="POST">
+        <span>Add new category </span>
+        <input id="" type="text" name="title" placeholder="title">
+        <input id="" type="text" name="position" placeholder="position">
+        <input type="submit" value="submit">
+   </form>
+
+   <form action="/admin/create.forum" method="POST">
+        <span>Add new forum </span>
+        <input id="" type="text" name="title" placeholder="title">
+        <input id="" type="text" name="description" placeholder="description"> 
+        <select name="category_id" id="category">
+        {%for category in categories %}
+            <option value="{{ category.getId}}">{{category.getTitle}}</option>
+        {% endfor %}
+        </select>
+        <input id="" type="text" name="position" placeholder="position">
+        <input type="submit" value="submit">
+   </form>
+
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends "./base.html.twig" %}
+
+
+{% block title %}Topics -  {% endblock %}
+{% block head %}
+    {{ parent() }}
+{% endblock %}
+{% block body %}
+    <div class="rounded-border">
+    <div class="title-header">
+        <a class="forum-link" href="/"> Fórum </a> > <a class="forum-link" href="/forum/{{ forum.getId }}"> {{ forum.getTitle }} </a>
+        <div class="float-right">
+             Páginas
+        </div>
+
+    </div>
+    <div class="topic-item bg-gray font-bold">
+        <div>Tópico</div>
+        <div class="text-center">Autor</div>
+        <div class="text-center">Respostas</div>
+        <div class="text-center">Nota</div>
+        <div>Última mensagem</div>
+    </div>
+
+    {% for topic in topics %}
+        <div class="topic-item topic-row">
+            <div>
+                 <a class="forum-link" href="/topic/{{topic.id}}"> {{ topic.title }} </a>
+            </div>
+            <div class="text-center">
+                <span>{{ topic.getUser.username }} </span>
+            </div>
+            <div class="text-center"> {{ topic.getPosts|length}} </div>
+            <div class="text-center votes-color"> 
+                <i class='bx bxs-star'></i>
+                <i class='bx bxs-star'></i>
+                <i class='bx bxs-star-half'></i> 
+            </div>
+            <div>
+                {% if topic.getLastPost|length %}
+                <span> {{ topic.getUpdatedAt|date('Y-m-d H:i')}} <br>
+                    Por: {{ topic.getLastPost.getUser.username }} </span>
+                {% endif %}
+            </div>
+        </div>
+    {% endfor %} 
+    </div>
+    {% if app.user %}
+        {{ include('forum/form.html.twig') }}
+    {% endif %}
+{% endblock %}
