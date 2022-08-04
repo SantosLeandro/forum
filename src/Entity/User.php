@@ -176,7 +176,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->avatar;
     }
 
-    public function isModerator()
+    public function isModeratorOrAdmin()
     {   
         if(in_array('ROLE_MODERATOR',$this->roles) or in_array('ROLE_ADMIN',$this->roles) ){
             return true;

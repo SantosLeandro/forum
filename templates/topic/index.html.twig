@@ -25,11 +25,13 @@
         </div>
         <div class="post-header">
             <span> #{{ loop.index }}</span>
-            {% if ( app.user.roles[0] ==  'ROLE_ADMIN' ) or ( app.user.roles[0] == 'ROLE_MODERATOR' )  %}
-            <form action="/admin/delete.post" method="POST">
-                <input type="hidden" name="post_id" value="{{ post.id }}"/>
-                <input type="submit" value="apagar"/>
-            </form>
+            {% if app.user %} 
+                {% if app.user.isModeratorOrAdmin  %}
+                <form action="/admin/delete.post" method="POST">
+                    <input type="hidden" name="post_id" value="{{ post.id }}"/>
+                    <input type="submit" value="apagar"/>
+                </form>
+                {% endif %}
             {% endif %}
             <hr>
             <span> <b>Mensagem publicada em: </b> {{ post.getUpdatedAt|date('Y-m-d H:i')}} </span> 
