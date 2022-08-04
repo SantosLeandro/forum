@@ -31,10 +31,15 @@
                 <span>{{ topic.getUser.username }} </span>
             </div>
             <div class="text-center"> {{ topic.getPosts|length}} </div>
-            <div class="text-center votes-color"> <i class='bx bxs-star'></i> <i class='bx bxs-star'></i> <i class='bx bxs-star-half'></i> </div>
+            <div class="text-center votes-color"> 
+                <i class='bx bxs-star'></i>
+                <i class='bx bxs-star'></i>
+                <i class='bx bxs-star-half'></i> 
+            </div>
             <div>
                 {% if topic.getLastPost|length %}
-                <span> {{ topic.getUpdatedAt|date('Y-m-d H:i')}} <br>Por: {{ topic.getLastPost.getUser.username }} </span>
+                <span> {{ topic.getUpdatedAt|date('Y-m-d H:i')}} <br>
+                    Por: {{ topic.getLastPost.getUser.username }} </span>
                 {% endif %}
             </div>
         </div>
