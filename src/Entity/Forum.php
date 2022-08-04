@@ -122,4 +122,21 @@ class Forum
         $this->position = $position;
         return $this; 
     }
+
+    public function getTotalPosts(): int 
+    {
+        $total = 0;
+        foreach($this->getTopics() as $topic) {
+            $total += $topic->getPosts()->count();
+        }
+        return $total;
+    }
+
+    public function getLastTopic(): ?Topic
+    {
+        if($this->topics->count() != 0)
+            return $this->getTopics()->last();
+        return null;
+
+    }
 }
