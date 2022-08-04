@@ -10,6 +10,7 @@ use App\Entity\User;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use App\Repository\UserRepository;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class UserController extends AbstractController
 {
@@ -23,7 +24,7 @@ class UserController extends AbstractController
     }
 
     #[Route('/login', methods:['GET','POST'], name: 'app_user_login')]
-    public function login(Request $request)
+    public function login(Request $request, AuthenticationUtils $authenticationUtils)
     {
         $contents = $request->getContent();
         if($contents) {
@@ -32,7 +33,7 @@ class UserController extends AbstractController
             }
 
         }
-        return $this->render('/user/login.html.twig');
+        return $this->render('/user/login.html.twig',['error' => $authenticationUtils->getLastAuthenticationError()]);
     }
 
     #[Route('/logout', name: 'app_user_logout')]

@@ -11,6 +11,10 @@
     {% if message is defined %}
     <h3> {{ message }} </h3>
     {% endif %}
+    {% if error is defined %}
+    <h3> {{ error }} </h3>
+    {% endif %}
+
     <div class="rounded-border form-login p-5">
         <form class="form" action="/login" method="POST">
             <input type="hidden" name="token" value="{{ csrf_token('login') }}"/>
