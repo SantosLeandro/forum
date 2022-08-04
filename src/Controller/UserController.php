@@ -11,6 +11,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use App\Repository\UserRepository;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use Symfony\Component\HttpFoundation\Response;
 
 class UserController extends AbstractController
 {
@@ -20,6 +21,18 @@ class UserController extends AbstractController
         $user = $this->getUser();
         $avatar_url = $this->getParameter('app.avatar_bucket_url');
         $avatars = json_decode(file_get_contents($avatar_url));
+        return $this->render('/user/index.html.twig',['user'=>$user,'url'=>$avatar_url,'avatars'=>$avatars->objects]);
+    }
+    
+    #[Route('/user/{id}',methods:['GET'], name: 'app_user_profile')]
+    public function show(int $id, UserRepository $userRepository)
+    {
+        $user = $userRepository->findOneById($id);
+        $avatar_url = $this->getParameter('app.avatar_bucket_url');
+        $avatars = json_decode(file_get_contents($avatar_url));
+        if(!$user) {
+            return new Response('<h1> OPS! </h1');
+        }
         return $this->render('/user/index.html.twig',['user'=>$user,'url'=>$avatar_url,'avatars'=>$avatars->objects]);
     }
 
