@@ -205,7 +205,7 @@ textarea {
 .post-item {
     display: grid;
     grid-template-rows: auto auto auto;
-    grid-template-columns: 10% 90%;
+    grid-template-columns: 15% auto;
     grid-template-areas: "post-user post-header" "post-user post-content" "post-user post-footer";
     /*border-bottom: 2px solid #333;*/
     column-gap: 5px;
@@ -214,9 +214,18 @@ textarea {
 
 .post-user {
     grid-area: post-user;
+    display: flex;
+    flex-direction: column;
     margin-left: 5px;
+    margin-top: 5px;
     text-align: center;
+    align-items: center;
 }
+
+.post-user-avatar {
+    width: 100px;
+    height: 100px;
+}   
 
 .post-header {
     grid-area: post-header;
