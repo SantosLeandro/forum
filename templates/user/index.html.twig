@@ -26,6 +26,7 @@
                 <span> Atualizado em: {{ user.getUpdatedAt|date('Y-m-d') }}</span><br>
                 <span> Tipo: {{ user.getRoles[0] }}</span>
             </div>
+            {% if app.user.id == user.id %}
             <div>
                 <label for="">Email</label><br>
                 <input id="" type="email" name="email" value="{{ user.email }}">
@@ -46,10 +47,10 @@
                     </div>
                 {% endfor %}
                 </div>
-
             <div>
                 <input type="submit" value="Atualizar">
-            </div>
+            </div> 
+            {% endif %}
         </form>
     </div>
     </div>
