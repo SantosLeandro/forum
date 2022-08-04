@@ -30,9 +30,19 @@
                         <span> {{ forum.getTopics|length }} </span>
                     </div>
                     <div>
-                        <span> todo </span>
+                        <span> {{ forum.getTotalPosts }} </span>
                     </div> 
-                    <div> Não disponível </div>
+                    {% if forum.getTotalPosts != 0 %}
+                        {% set lastPost = forum.getLastTopic.getLastPost %}
+                        <div> 
+                            <span> {{ lastPost.createdAt|date('Y-m-d H:m')}} </span> <br> 
+                            <span> {{ lastPost.getUser.username }}</span> 
+                        </div>
+                    {% else %}
+                        <div>
+                            <span> 0 </span>
+                        </div>
+                    {% endif %}
                 </div>
             {% endfor %}
             </div>

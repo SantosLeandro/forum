@@ -18,7 +18,7 @@
     <div class="post-item  {{ cycle(['bg_odd', 'bg_even'], loop.index0) }} ">
         <div class="post-user">
             <span> {{ post.getUser.username }} </span>
-            <img src={{url}}{{post.getUser.avatar}} />
+            <img class="post-user-avatar" src={{url}}{{post.getUser.avatar}} />
             <span> Nível </span>
             <span> {{ post.getUser.roles[0] }} </span>
 

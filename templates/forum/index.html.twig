@@ -30,7 +30,7 @@
             <div class="text-center">
                 <span>{{ topic.getUser.username }} </span>
             </div>
-            <div class="text-center"> 0 </div>
+            <div class="text-center"> {{ topic.getPosts|length}} </div>
             <div class="text-center votes-color"> <i class='bx bxs-star'></i> <i class='bx bxs-star'></i> <i class='bx bxs-star-half'></i> </div>
             <div>
                 {% if topic.getLastPost|length %}
