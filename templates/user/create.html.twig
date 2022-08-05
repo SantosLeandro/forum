@@ -15,21 +15,22 @@
             <form class="form-create-acc" action="/user.store" method="POST">
                 <input type="hidden" name="token" value="{{ csrf_token('user.store') }}"/>
                 <div>
-                    <input id="" type="email" name="email" placeholder="email@email.com">
+                    <input id="email" type="email" name="email" placeholder="email@email.com">
                 </div>
                 <div>
-                    <input id="" type="text" name="username" placeholder="username">
+                    <input id="username" type="text" name="username" placeholder="username">
                 </div>
                 <div>
-                    <input id="" type="password" name="password" placeholder="password">
+                    <input id="password" type="password" name="password" placeholder="password">
                 </div>
                 <div>
-                    <input id="" type="password" name="" placeholder="password">
+                    <input id="password-reapeat" type="password" name="" placeholder="password">
                 </div>
+                <h4> Avatar: </h4>
                 <div class="avatar-list">
                 {% for avatar in avatars %}
-                    <div>
-                        <input name="avatar" type="radio" value="{{avatar.name}}" >
+                    <div class="bg-even text-center">
+                        <input name="avatar" type="radio" value="{{avatar.name}}" ><br>
                         <img src="{{url}}{{avatar.name}}"></img>
                         </input>
                     </div>
