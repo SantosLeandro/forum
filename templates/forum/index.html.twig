@@ -23,7 +23,7 @@
     </div>
 
     {% for topic in topics %}
-        <div class="topic-item topic-row">
+        <div class="topic-item topic-row {{ cycle(['bg_odd', 'bg_even'], loop.index0) }}">
             <div>
                  <a class="forum-link" href="/topic/{{topic.id}}"> {{ topic.title }} </a>
             </div>

@@ -21,7 +21,7 @@
                 <div>Última mensagem</div>
             </div>
             {% for forum in category.getForums %}
-                <div class="forum-grid">
+                <div class="forum-grid {{ cycle(['bg_odd', 'bg_even'], loop.index0) }}">
                     <div>
                         <a class="forum-link" href='/forum/{{ forum.id }}'>{{ forum.title }}</a><br> 
                         <span> {{ forum.description }} </span>
