@@ -91,21 +91,21 @@ body {
   }
   body {
     max-width: 100%;
-  }
-
-  
-
-
+  } 
 }
 
 .avatar-list {
     display: grid;
-    grid-template-columns: auto auto auto;
+    width: 500px;
+    overflow-x: scroll;
+    overflow-y: scroll;
+    height: 400px;
+    grid-template-columns: auto auto auto auto auto;
+    margin-bottom: 10px;
 }
 
 .create-acc-grid {
     display: grid;
-    width: 500px;
 }
 
 input {
@@ -128,9 +128,9 @@ textarea {
 }
 
 .form-create-acc input{
-    width: 100%;
-    
+    width: 50%; 
 }
+
 
 .deleted-post {
     background: red;
@@ -353,8 +353,10 @@ input {
 
 
 input[type=submit] {
-    background: #ED9A00;
-    border-radius: 4px;
+    background-image: linear-gradient(#ED9A00, #C17500);
+    border-radius: 1px;
+    font-weight: bold;
+    width: auto;
     /*border: 2px solid #C28108;*/
     height: 25px;
 }
