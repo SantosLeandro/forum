@@ -55,7 +55,25 @@ class PostController extends AbstractController
         $topicRepository->add($topic, true);
 
         return $this->redirect('/topic/'.$topic_id);
+    }
 
+    #[Route('/post.delete', name: 'app_post_delete')]
+    public function delete(Request $request, PostRepository $postRepository)
+    {
+        $post_id = $request->get('post_id');
+        $post = $postRepository->findOneBy(['id'=>$post_id]);
+        $topic_id = $post->getTopic()->getId();
+        
+        if($post->getUser()->getUserIdentifier() != $this->getUser()->getUserIdentifier()) {
+            return new Response('Operação não permitida');
+        }
+
+        $postRepository->remove($post, true);
+
+        return $this->render('/topic/'.$topic_id);
 
     }
+    
+
+    
 }

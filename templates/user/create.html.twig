@@ -12,7 +12,7 @@
         <div> </div>
         <div>
             <h1>New User</h1>
-            <form class="form-create-acc" action="/user.store" method="POST">
+            <form class="form-create-acc" action="/users" method="POST">
                 <input type="hidden" name="token" value="{{ csrf_token('user.store') }}"/>
                 <div>
                     <input id="email" type="email" name="email" placeholder="email@email.com">

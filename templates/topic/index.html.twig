@@ -26,8 +26,13 @@
         <div class="post-header">
             <span> #{{ loop.index }}</span>
             {% if app.user %} 
-                {% if app.user.isModeratorOrAdmin  %}
+                {% if app.user.isModeratorOrAdmin %}
                 <form action="/admin/delete.post" method="POST">
+                    <input type="hidden" name="post_id" value="{{ post.id }}"/>
+                    <input type="submit" onclick=" return confirm('Esta operação é irreversível')" value="apagar"/>
+                </form>
+                {% elseif app.user.getId == post.getUser.getId %}
+                <form action="/post.delete" method="POST">
                     <input type="hidden" name="post_id" value="{{ post.id }}"/>
                     <input type="submit" value="apagar"/>
                 </form>
@@ -40,8 +45,9 @@
         <div class="post-content">
             {% if post.deletedAt != null %}
                 <b class="deleted-post"> Mensagem Apagada pelo moderador </b>
-            {% endif %}
+            {% else %}
             <p> {{ post.content|raw }} </p>
+            {% endif %}
         </div>
         <div class="post-footer">
             <hr>
