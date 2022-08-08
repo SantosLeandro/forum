@@ -1,5 +1,5 @@
 # Forum App
-<img src="/assets/preview.png" alt="" title="preview">
+<img src="/assets/img/preview.png" alt="" title="preview">
 http://forumdemo.ddns.net
 
 
