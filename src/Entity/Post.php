@@ -15,7 +15,7 @@ class Post
     use TimeStamp;
 
     #[ORM\Id]
-    #[ORM\GeneratedValue (strategy:'AUTO')]
+    #[ORM\GeneratedValue ()]
     #[ORM\Column()]
     private ?int $id = null;
 
@@ -39,9 +39,6 @@ class Post
 
     public function getContent(): ?string
     {
-        if( $this->deletedAt != null) {
-            return null;
-        }
         return $this->content;
     }
 

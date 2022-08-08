@@ -1,21 +1,26 @@
 <nav class="nav-bar">
     <ul>
         <li>
-            <a href='/'> Home </a>
+            <a href='/'> <i class='bx bxs-home' ></i> Home </a>
         </li>
-    {% if app.user %}
-        <li>
-            <a href='/user'> Perfil </a>
-        <li>
-            <a href='/logout'> Logout </a>
-        </li>
-    {% else %}
-        <li>
-            <a href='/login'> Login </a>
-        </li>
-        <li>
-            <a href='/user.create'> Criar conta </a>
-        </li>
+        {% if app.user %}
+            <div class="float-right">
+            <li>
+                <a href='/user'> <i class='bx bxs-user'></i> Perfil </a>
+            </li>
+            <li>
+                <a href='/logout'> Logout </a>
+            </li>
+            </div>
+        {% else %}
+            <div class="float-right">
+            <li>
+                <a href='/login'> Login </a>
+            </li>
+            <li>
+                <a href='/user.create'> Criar conta </a>
+            </li>
+            </div>
     {% endif %}
     </ul>
 </nav>

@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class UserController extends AbstractController
 {
-    #[Route('/user',methods:['GET'], name: 'app_user')]
+    #[Route('/users',methods:['GET'], name: 'app_user')]
     public function index()
     {
         $user = $this->getUser();
@@ -24,7 +24,7 @@ class UserController extends AbstractController
         return $this->render('/user/index.html.twig',['user'=>$user,'url'=>$avatar_url,'avatars'=>$avatars->objects]);
     }
     
-    #[Route('/user/{id}',methods:['GET'], name: 'app_user_profile')]
+    #[Route('/users/{id}',methods:['GET'], name: 'app_user_profile')]
     public function show(int $id, UserRepository $userRepository)
     {
         $user = $userRepository->findOneById($id);
@@ -64,7 +64,7 @@ class UserController extends AbstractController
         return $this->render('/user/create.html.twig',['url'=>$avatar_url,'avatars'=>$avatars->objects]);
     }
 
-    #[Route('/user.store',methods:['POST'], name: 'app_user_store')]
+    #[Route('/users',methods:['POST'], name: 'app_user_store')]
     public function store(Request $request, 
                             ValidatorInterface $validator, 
                             UserPasswordHasherInterface $hasher, 
@@ -98,12 +98,12 @@ class UserController extends AbstractController
         $entityManager->persist($user);
         $entityManager->flush();
         
-        return $this->render('user/login.html.twig',['message'=>'usuário criado']);
+        return $this->render('user/login.html.twig',['error'=>null,'message'=>'usuário criado']);
         
     }
 
     
-    #[Route('/user.update',methods:['POST'], name: 'app_user_update')]
+    #[Route('/users',methods:['PUT'], name: 'app_user_update')]
     public function update(Request $request, UserPasswordHasherInterface $hasher, UserRepository $userRepository)
     {
         $content = $request->request;

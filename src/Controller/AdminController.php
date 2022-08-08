@@ -65,6 +65,7 @@ class AdminController extends AbstractController
         $post = $postRepository->findOneBy(['id'=>$post_id]);
         $now = new DateTime();
         $post->setDeletedAt($now);
+        $post->setContent('<b class="deleted-post"> Mensagem Apagada pelo moderador </b>');
         
         $postRepository->add($post, true);
 

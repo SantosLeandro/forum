@@ -16,7 +16,7 @@ class Forum
     use TimeStamp;
 
     #[ORM\Id]
-    #[ORM\GeneratedValue (strategy:'AUTO')]
+    #[ORM\GeneratedValue ()]
     #[ORM\Column()]
     private ?int $id = null;
 
