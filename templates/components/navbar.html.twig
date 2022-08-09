@@ -8,6 +8,11 @@
             <li>
                 <a href='/user'> <i class='bx bxs-user'></i> Perfil </a>
             </li>
+            {% if app.user.getRoles[0] == 'ROLE_ADMIN' %}
+                <li>
+                    <a class="dropdown" href='/admin'> Admin </a>
+                </li>
+            {% endif %}
             <li>
                 <a href='/logout'> Logout </a>
             </li>
