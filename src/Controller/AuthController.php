@@ -24,10 +24,10 @@ class AuthController extends AbstractController
         $contents = $request->getContent();
         if($contents) {
            if(!$this->isCsrfTokenValid('login', $request->request->get('token'))) {
-                return $this->render('/user/login.html.twig',['message'=>'error csrf']);
+                return $this->render('/auth/index.html.twig',['message'=>'error csrf']);
             }
         }
-        return $this->render('/user/login.html.twig',['error' => $authenticationUtils->getLastAuthenticationError()]);
+        return $this->render('/auth/index.html.twig',['error' => $authenticationUtils->getLastAuthenticationError()]);
     }
 
     #[Route('/logout', name: 'app_user_logout')]
