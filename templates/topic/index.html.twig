@@ -58,15 +58,10 @@
     </div>
     {% if app.user %}
     <div class="rounded-border">
-        <div class="form">
-            <button id="boldButton"><b>bold</b></button>
-            <button id="italicButton"><i>italic</i></button>
-            <button id="underlineButton"><u>underline</u></button>
-            <button id="linkButton">link</button>
-        </div>
+        {{ include('components/bb-buttons.html.twig') }}
         <form class="form" action="/post.store" method="POST">
             <input type="hidden" name="topic_id" value={{ topic.getId }}>
-            <textarea id="" name="content" cols="30" rows="10"></textarea>
+            <textarea id="text" name="content" cols="30" rows="10"></textarea>
             <input type="submit" value="Enviar">
         </form>
     </div>

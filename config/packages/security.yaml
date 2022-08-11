@@ -18,11 +18,11 @@ security:
             provider: app_user_provider
 
             form_login:
-              login_path: app_user_login
-              check_path: app_user_login
+              login_path: app_auth_login
+              check_path: app_auth_login
 
             logout:
-              path: app_user_logout
+              path: app_auth_logout
 
 
             # activate different ways to authenticate

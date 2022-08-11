@@ -10,3 +10,38 @@ import './styles/app.css';
 
 // start the Stimulus application
 import './bootstrap';
+
+document.getElementById("boldButton").addEventListener("click", function(){
+    var textArea = document.getElementById("text");
+    textArea.value += '[b][/b]'; 
+    var end = textArea.selectionEnd;
+    textArea.focus();
+    textArea.selectionEnd= end - 4;
+});
+
+document.getElementById("italicButton").addEventListener("click", function(){
+    var textArea = document.getElementById("text");
+    textArea.value += '[i][/i]'; 
+    var end = textArea.selectionEnd;
+    textArea.focus();
+    textArea.selectionEnd= end - 4;
+});
+
+document.getElementById("underlineButton").addEventListener("click", function(){
+    var textArea = document.getElementById("text");
+    textArea.value += '[u][/u]'; 
+    var end = textArea.selectionEnd;
+    textArea.focus();
+    textArea.selectionEnd= end - 4;
+});
+
+document.getElementById("linkButton").addEventListener("click", function(){
+    var textArea = document.getElementById("text");
+    textArea.value += '[url=][/url]'; 
+    var end = textArea.selectionEnd;
+    textArea.focus();
+    textArea.selectionEnd= end - 7;
+
+});
+
+

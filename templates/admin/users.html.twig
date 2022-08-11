@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello AdminController!{% endblock %}
+
+{% block body %}
+    <div class="rounded-border form-regular">
+        {% foreach( user in users ) %}
+            <span> {{ user.getUsername }} </span>
+        {% endif %}
+    </div>
+
+{% endblock %}

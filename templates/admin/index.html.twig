@@ -41,16 +41,15 @@
         </div>
     </div>
 
-
+   <div class="rounded-border form-regular">
+   <h3> Adicionar Categoria </h3>
    <form action="/admin/create.category" method="POST">
-        <span>Add new category </span>
         <input id="" type="text" name="title" placeholder="title">
         <input id="" type="text" name="position" placeholder="position">
-        <input type="submit" value="submit">
+        <input class="float-right" type="submit" value="submit">
    </form>
-
+   <h3> Adicionar Forum </h3>
    <form action="/admin/create.forum" method="POST">
-        <span>Add new forum </span>
         <input id="" type="text" name="title" placeholder="title">
         <input id="" type="text" name="description" placeholder="description"> 
         <select name="category_id" id="category">
@@ -59,7 +58,8 @@
         {% endfor %}
         </select>
         <input id="" type="text" name="position" placeholder="position">
-        <input type="submit" value="submit">
+        <input class="float-right" type="submit" value="submit">
    </form>
+   </div>
 
 {% endblock %}
