@@ -1,0 +1,17 @@
+<div class="inline-flex float-right">
+    {% if app.user.isModeratorOrAdmin %}
+    <form class="p-5" action="/admin/delete.post" method="POST">
+        <input type="hidden" name="post_id" value="{{ post.id }}"/>
+        <input type="submit" onclick=" return confirm('Esta operação é irreversível')" value="apagar"/>
+    </form>
+    {% elseif app.user.getId == post.getUser.getId %}
+    <form class="p-5" action="/post" method="DELETE">
+        <input type="hidden" name="post_id" value="{{ post.id }}"/>
+        <input type="submit" value="apagar"/>
+    </form>
+    <form class="p-5" action="/post/{{ post.id }}" method="GET">
+        <input type="submit" value="Editar">
+    </form>
+    {% endif %}
+</div>
+
