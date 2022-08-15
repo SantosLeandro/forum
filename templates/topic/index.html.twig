@@ -25,33 +25,23 @@
         </div>
         <div class="post-header">
             <span> #{{ loop.index }}</span>
-            {% if app.user %} 
-                {% if app.user.isModeratorOrAdmin %}
-                <form action="/admin/delete.post" method="POST">
-                    <input type="hidden" name="post_id" value="{{ post.id }}"/>
-                    <input type="submit" onclick=" return confirm('Esta operação é irreversível')" value="apagar"/>
-                </form>
-                {% elseif app.user.getId == post.getUser.getId %}
-                <form action="/post.delete" method="POST">
-                    <input type="hidden" name="post_id" value="{{ post.id }}"/>
-                    <input type="submit" value="apagar"/>
-                </form>
-                {% endif %}
-            {% endif %}
             <hr>
             <span> <b>Mensagem publicada em: </b> {{ post.getUpdatedAt|date('Y-m-d H:i')}} </span> 
             <hr>
         </div>
         <div class="post-content">
             {% if post.deletedAt != null %}
-                <b class="deleted-post"> Mensagem Apagada pelo moderador </b>
+                <b class=""> Mensagem Apagada </b>
             {% else %}
             <p> {{ post.content|raw }} </p>
             {% endif %}
         </div>
         <div class="post-footer">
             <hr>
-            <span> footer </span>
+            <a class="link" href="/users/{{ post.getUser.id }}"> VER PERFIL </a>
+            {% if app.user %} 
+                {{ include('topic/buttons.html.twig') }}
+            {% endif %}
         </div>
     </div>
     {% endfor %}
