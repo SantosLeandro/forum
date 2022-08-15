@@ -57,7 +57,17 @@ class PostController extends AbstractController
         return $this->redirect('/topic/'.$topic_id);
     }
 
-    #[Route('/post.delete', name: 'app_post_delete')]
+    #[Route('/post/{id}', methods:['GET'], name: 'app_post_edit')]
+    public function edit(int $id, PostRepository $postRepository)
+    {
+        $post = $postRepository->findOneBy(['id'=>$id]);
+        if($post->getUser()->getUserIdentifier() != $this->getUser()->getUserIdentifier()) {
+            return new Response('OPS!');
+        }
+        return $this->render('post/index.html.twig',['post'=>$post]);
+    }
+
+    #[Route('/post/{id}', methods:['DELETE'], name: 'app_post_delete')]
     public function delete(Request $request, PostRepository $postRepository)
     {
         $post_id = $request->get('post_id');
