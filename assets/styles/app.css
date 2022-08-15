@@ -92,15 +92,25 @@
   display: block;
 }
 
+.inline-flex {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    text-decoration: none;
+    font-weight: bold;
+}
+
 body {
     font-family: 'Open Sans', sans-serif;
     background: lightgray;
+    background: #EEEE;
     margin: auto;
     max-width: 80%;
     font-size: 13px;
     display: grid;
     grid-template-areas: "navbar" "content" "footer";
     grid-template-rows: 50px 1fr auto;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
 
 }
 
@@ -131,6 +141,16 @@ input {
     box-sizing: border-box;
     padding: 5px;
     margin-bottom: 5px;
+}
+
+.quote {
+
+}
+
+.link {
+    color: #F28224;
+    font-weight: bold;
+    text-decoration: none;
 }
 
 textarea {
@@ -371,7 +391,7 @@ input {
 }
 
 
-input[type=submit] {
+.button-submit, input[type=submit] {
     background-image: linear-gradient(#ED9A00, #C17500);
     border-radius: 1px;
     font-weight: bold;
