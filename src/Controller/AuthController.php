@@ -33,6 +33,6 @@ class AuthController extends AbstractController
     #[Route('/logout', name: 'app_user_logout')]
     public function logout()
     {
-        
+        throw new \LogicException('Este método é interceptado pelo firewall.');
     }
 }

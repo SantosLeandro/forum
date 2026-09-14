@@ -12,6 +12,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use App\Repository\UserRepository;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Finder\Finder;
 
 class UserController extends AbstractController
 {
@@ -20,8 +21,19 @@ class UserController extends AbstractController
     {
         $user = $this->getUser();
         $avatar_url = $this->getParameter('app.avatar_bucket_url');
-        $avatars = json_decode(file_get_contents($avatar_url));
-        return $this->render('/user/index.html.twig',['user'=>$user,'url'=>$avatar_url,'avatars'=>$avatars->objects]);
+        // $avatars = json_decode(file_get_contents($avatar_url));
+         $finder = new Finder();
+        $finder->files()->in($this->getParameter('kernel.project_dir') . '/public/assets/avatars');
+
+        $avatars = [];
+
+        foreach ($finder as $file) {
+            $avatars[] = [
+                'name' => $file->getFilename(),
+                'url' => $avatar_url . '/' . $file->getFilename(),
+            ];
+        }
+        return $this->render('/user/index.html.twig',['user'=>$user,'url'=>$avatar_url,'avatars'=>$avatars]);
     }
     
     #[Route('/users/{id}',methods:['GET'], name: 'app_user_profile')]
@@ -29,11 +41,22 @@ class UserController extends AbstractController
     {
         $user = $userRepository->findOneById($id);
         $avatar_url = $this->getParameter('app.avatar_bucket_url');
-        $avatars = json_decode(file_get_contents($avatar_url));
+        // $avatars = json_decode(file_get_contents($avatar_url));
+        $finder = new Finder();
+        $finder->files()->in($this->getParameter('kernel.project_dir') . '/public/assets/avatars');
+
+        $avatars = [];
+
+        foreach ($finder as $file) {
+            $avatars[] = [
+                'name' => $file->getFilename(),
+                'url' => $avatar_url . '/' . $file->getFilename(),
+            ];
+        }
         if(!$user) {
             return new Response('<h1> OPS! </h1');
         }
-        return $this->render('/user/index.html.twig',['user'=>$user,'url'=>$avatar_url,'avatars'=>$avatars->objects]);
+        return $this->render('/user/index.html.twig',['user'=>$user,'url'=>$avatar_url,'avatars'=>$avatars]);
     }
 
     #[Route('/login', methods:['GET','POST'], name: 'app_user_login')]
@@ -52,16 +75,27 @@ class UserController extends AbstractController
     #[Route('/logout', name: 'app_user_logout')]
     public function logout()
     {
-        
+        throw new \LogicException('Este método é interceptado pelo firewall.');
     }   
     
     #[Route('/user.create', methods:['GET'], name: 'app_user_create')]
     public function create()
     {
-        $avatar_url = $this->getParameter('app.avatar_bucket_url');
-        $avatars = json_decode(file_get_contents($avatar_url));
+        $avatarUrl = $this->getParameter('app.avatar_bucket_url');
+        // $avatars = json_decode(file_get_contents($avatar_url));
         //dd($avatars);
-        return $this->render('/user/create.html.twig',['url'=>$avatar_url,'avatars'=>$avatars->objects]);
+        $finder = new Finder();
+        $finder->files()->in($this->getParameter('kernel.project_dir') . '/public/assets/avatars');
+
+        $avatars = [];
+
+        foreach ($finder as $file) {
+            $avatars[] = [
+                'name' => $file->getFilename(),
+                'url' => $avatarUrl . '/' . $file->getFilename(),
+            ];
+        }
+        return $this->render('/user/create.html.twig',['url'=>$avatarUrl,'avatars'=>$avatars]);
     }
 
     #[Route('/users',methods:['POST'], name: 'app_user_store')]
