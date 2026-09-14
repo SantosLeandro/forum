@@ -16,10 +16,15 @@ security:
         main:
             lazy: true
             provider: app_user_provider
+            user_checker: App\Security\UserChecker
 
             form_login:
               login_path: app_auth_login
               check_path: app_auth_login
+
+            login_throttling:
+              max_attempts: 5
+              interval: '15 minutes'
 
             logout:
               path: app_user_logout

@@ -12,7 +12,7 @@
     <a href="/">Home </a> > <a href="/forum/{{ topic.getForum.getId }}"> {{ topic.getForum.getTitle }} </a>
     <div class="rounded-border">
     <div class="title-header">
-            <b> Tópico: {{ posts[0].getTopic.title }} </b>
+            <b> Tópico: {{ topic.title }} </b>
     </div>
     {% for post in posts %}
     <div class="post-item  {{ cycle(['bg_odd', 'bg_even'], loop.index0) }} ">
@@ -47,13 +47,18 @@
     {% endfor %}
     </div>
     {% if app.user %}
-    <div class="rounded-border">
-        {{ include('components/bb-buttons.html.twig') }}
-        <form class="form" action="/post.store" method="POST">
-            <input type="hidden" name="topic_id" value={{ topic.getId }}>
-            <textarea id="text" name="content" cols="30" rows="10"></textarea>
-            <input type="submit" value="Enviar">
-        </form>
+    <div class="form-panel">
+        <div class="form-panel-header">Responder</div>
+        <div class="form-panel-body">
+            {{ include('components/bb-buttons.html.twig') }}
+            <form class="form" action="/post.store" method="POST">
+                <input type="hidden" name="token" value="{{ csrf_token('post.store') }}"/>
+                <input type="hidden" name="topic_id" value={{ topic.getId }}>
+                <label class="form-label" for="text">Conteúdo</label>
+                <textarea id="text" name="content" cols="30" rows="10" placeholder="Escreva aqui sua resposta..."></textarea>
+                <input type="submit" value="Enviar">
+            </form>
+        </div>
     </div>
     {% endif %}
 {% endblock %}

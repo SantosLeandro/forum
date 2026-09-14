@@ -19,10 +19,7 @@ final class Version20260913213617 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        $now = new \DateTimeImmutable(); 
-        $nowString = $now->format('Y-m-d H:i:s');
-        $this->connection->insert('users', ['email' => 'admin@localhost', 'roles' => '["ROLE_ADMIN"]', 'password' => 'COLE_AQUI_O_HASH_DA_SENHA', 'username' => 'admin', 'avatar' => null, 'created_at' => $nowString, 'updated_at' => $nowString, 'deleted_at' => null,]);
-
+        // O usuário admin deve ser criado via console/app, nunca com um hash no migration.
     }
 
     public function down(Schema $schema): void

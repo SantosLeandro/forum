@@ -399,3 +399,160 @@ input {
     /*border: 2px solid #C28108;*/
     height: 25px;
 }
+
+.form-panel {
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    background: #fff;
+    box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.15), 0 4px 12px 0 rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.form-panel-header {
+    background-image: linear-gradient(#444, #000);
+    color: #ED9A00;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 10px 16px;
+}
+
+.form-panel-body {
+    padding: 14px 16px;
+}
+
+.form-panel-body .form {
+    margin: 0;
+    padding: 0;
+}
+
+.form-panel .form-label {
+    font-weight: bold;
+    margin: 8px 0 4px 0;
+    display: block;
+}
+
+.form-panel input[type=text],
+.form-panel input[type=email],
+.form-panel textarea {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 8px;
+    border: 1px solid #bbb;
+    border-radius: 3px;
+    font-family: inherit;
+    font-size: 13px;
+}
+
+.form-panel input[type=text]:focus,
+.form-panel input[type=email]:focus,
+.form-panel textarea:focus {
+    outline: none;
+    border-color: #ED9A00;
+    box-shadow: 0 0 0 2px rgba(237, 154, 0, 0.25);
+}
+
+.bb-toolbar {
+    display: flex;
+    flex-flow: row wrap;
+    gap: 6px;
+    margin: 8px 0;
+}
+
+.bb-toolbar button {
+    border: 1px solid #999;
+    background: #eee;
+    border-radius: 3px;
+    padding: 4px 10px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.bb-toolbar button:hover {
+    background: #ffd27a;
+    border-color: #ED9A00;
+}
+
+.form-panel button,
+.form-panel input[type=submit] {
+    margin-top: 10px;
+    border-radius: 3px;
+    padding: 6px 18px;
+    height: auto;
+    cursor: pointer;
+}
+
+.form-panel input[type=submit]:hover,
+.form-panel button[type=submit]:hover {
+    background-image: linear-gradient(#ffb13d, #e08a00);
+}
+
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+.admin-table th {
+    background-image: linear-gradient(#444, #000);
+    color: #ED9A00;
+    text-align: left;
+    padding: 8px 10px;
+}
+
+.admin-table td {
+    padding: 8px 10px;
+    border-bottom: 1px solid #ccc;
+}
+
+.inline-form {
+    display: inline;
+    margin: 0;
+}
+
+.inline-form input[type=submit] {
+    height: auto;
+    padding: 4px 12px;
+    border-radius: 3px;
+}
+
+.status-badge {
+    font-weight: bold;
+    padding: 2px 8px;
+    border-radius: 3px;
+    color: #fff;
+}
+
+.status-active {
+    background: #2e7d32;
+}
+
+.status-inactive {
+    background: #c62828;
+}
+
+.pagination {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    margin: 10px 0;
+    font-weight: bold;
+}
+
+.pagination a {
+    color: #EF9100;
+    text-decoration: none;
+}
+
+.pagination a:hover {
+    text-decoration: underline;
+}
+
+.pagination .disabled {
+    color: #999;
+}

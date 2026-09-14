@@ -4,10 +4,17 @@
 
 {% block body %}
     <div class="rounded-border form-regular">
+        <div class="title-header">
+            <a class="forum-link" href="/admin/users"> Gerenciar usuários </a>
+        </div>
+    </div>
+
+    <div class="rounded-border form-regular">
         <div class="">
         <h3> Atualizar categoria </h3>
         {% for category in categories %}
             <form action="/admin/update.category" method="POST">
+                <input type="hidden" name="token" value="{{ csrf_token('admin.update.category') }}"/>
                 <input type=text" name="title" value="{{category.title}}"/>
                 <input type="text" name="position" value="{{category.position}}"/>
                 <input type="hidden" name="category_id" value="{{category.id}}">
@@ -22,6 +29,7 @@
         <h3> Atualizar Forum </h3>
         {% for forum in forums %}
             <form action="/admin/update.forum" method="POST">
+                <input type="hidden" name="token" value="{{ csrf_token('admin.update.forum') }}"/>
                 <input type=text" name="title" value="{{forum.title}}"/>
                 <input type=text" name="description" value="{{forum.description}}"/>
                 <input type="text" name="position" value="{{forum.position}}"/>
@@ -44,12 +52,14 @@
    <div class="rounded-border form-regular">
    <h3> Adicionar Categoria </h3>
    <form action="/admin/create.category" method="POST">
+        <input type="hidden" name="token" value="{{ csrf_token('admin.create.category') }}"/>
         <input id="" type="text" name="title" placeholder="title">
         <input id="" type="text" name="position" placeholder="position">
         <input class="float-right" type="submit" value="submit">
    </form>
    <h3> Adicionar Forum </h3>
    <form action="/admin/create.forum" method="POST">
+        <input type="hidden" name="token" value="{{ csrf_token('admin.create.forum') }}"/>
         <input id="" type="text" name="title" placeholder="title">
         <input id="" type="text" name="description" placeholder="description"> 
         <select name="category_id" id="category">

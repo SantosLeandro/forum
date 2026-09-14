@@ -10,155 +10,174 @@ use App\Entity\User;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use App\Repository\UserRepository;
-use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class UserController extends AbstractController
 {
-    #[Route('/users',methods:['GET'], name: 'app_user')]
+    private function getAvatars(): array
+    {
+        $finder = new Finder();
+        $finder->files()->in($this->getParameter('kernel.project_dir') . '/public/assets/avatars');
+
+        $avatars = [];
+        foreach ($finder as $file) {
+            $avatars[] = [
+                'name' => $file->getFilename(),
+                'url' => $this->getParameter('app.avatar_bucket_url') . '/' . $file->getFilename(),
+            ];
+        }
+        return $avatars;
+    }
+
+    private function getAllowedAvatarNames(): array
+    {
+        return array_map(static fn (array $avatar): string => $avatar['name'], $this->getAvatars());
+    }
+
+    #[Route('/users', methods:['GET'], name: 'app_user')]
+    #[IsGranted('ROLE_USER')]
     public function index()
     {
         $user = $this->getUser();
-        $avatar_url = $this->getParameter('app.avatar_bucket_url');
-        // $avatars = json_decode(file_get_contents($avatar_url));
-         $finder = new Finder();
-        $finder->files()->in($this->getParameter('kernel.project_dir') . '/public/assets/avatars');
-
-        $avatars = [];
-
-        foreach ($finder as $file) {
-            $avatars[] = [
-                'name' => $file->getFilename(),
-                'url' => $avatar_url . '/' . $file->getFilename(),
-            ];
-        }
-        return $this->render('/user/index.html.twig',['user'=>$user,'url'=>$avatar_url,'avatars'=>$avatars]);
+        return $this->render('/user/index.html.twig', [
+            'user' => $user,
+            'url' => $this->getParameter('app.avatar_bucket_url'),
+            'avatars' => $this->getAvatars(),
+        ]);
     }
-    
-    #[Route('/users/{id}',methods:['GET'], name: 'app_user_profile')]
+
+    #[Route('/users/{id}', methods:['GET'], name: 'app_user_profile')]
     public function show(int $id, UserRepository $userRepository)
     {
         $user = $userRepository->findOneById($id);
-        $avatar_url = $this->getParameter('app.avatar_bucket_url');
-        // $avatars = json_decode(file_get_contents($avatar_url));
-        $finder = new Finder();
-        $finder->files()->in($this->getParameter('kernel.project_dir') . '/public/assets/avatars');
-
-        $avatars = [];
-
-        foreach ($finder as $file) {
-            $avatars[] = [
-                'name' => $file->getFilename(),
-                'url' => $avatar_url . '/' . $file->getFilename(),
-            ];
+        if (!$user) {
+            return new Response('<h1> OPS! </h1>');
         }
-        if(!$user) {
-            return new Response('<h1> OPS! </h1');
-        }
-        return $this->render('/user/index.html.twig',['user'=>$user,'url'=>$avatar_url,'avatars'=>$avatars]);
+        return $this->render('/user/index.html.twig', [
+            'user' => $user,
+            'url' => $this->getParameter('app.avatar_bucket_url'),
+            'avatars' => $this->getAvatars(),
+        ]);
     }
 
-    #[Route('/login', methods:['GET','POST'], name: 'app_user_login')]
-    public function login(Request $request, AuthenticationUtils $authenticationUtils)
-    {
-        $contents = $request->getContent();
-        if($contents) {
-           if(!$this->isCsrfTokenValid('login', $request->request->get('token'))) {
-                return $this->render('/user/login.html.twig',['message'=>'error csrf']);
-            }
-
-        }
-        return $this->render('/user/login.html.twig',['error' => $authenticationUtils->getLastAuthenticationError()]);
-    }
-
-    #[Route('/logout', name: 'app_user_logout')]
-    public function logout()
-    {
-        throw new \LogicException('Este método é interceptado pelo firewall.');
-    }   
-    
     #[Route('/user.create', methods:['GET'], name: 'app_user_create')]
     public function create()
     {
-        $avatarUrl = $this->getParameter('app.avatar_bucket_url');
-        // $avatars = json_decode(file_get_contents($avatar_url));
-        //dd($avatars);
-        $finder = new Finder();
-        $finder->files()->in($this->getParameter('kernel.project_dir') . '/public/assets/avatars');
-
-        $avatars = [];
-
-        foreach ($finder as $file) {
-            $avatars[] = [
-                'name' => $file->getFilename(),
-                'url' => $avatarUrl . '/' . $file->getFilename(),
-            ];
-        }
-        return $this->render('/user/create.html.twig',['url'=>$avatarUrl,'avatars'=>$avatars]);
+        return $this->render('/user/create.html.twig', [
+            'url' => $this->getParameter('app.avatar_bucket_url'),
+            'avatars' => $this->getAvatars(),
+        ]);
     }
 
-    #[Route('/users',methods:['POST'], name: 'app_user_store')]
-    public function store(Request $request, 
-                            ValidatorInterface $validator, 
-                            UserPasswordHasherInterface $hasher, 
+    #[Route('/users', methods:['POST'], name: 'app_user_store')]
+    public function store(Request $request,
+                            ValidatorInterface $validator,
+                            UserPasswordHasherInterface $hasher,
                             ManagerRegistry $doctrine)
     {
-
-        if(!$this->isCsrfTokenValid('user.store', $request->request->get('token'))) {
-            return $this->render('/user/login.html.twig',['message'=>'error']);
+        if (!$this->isCsrfTokenValid('user.store', $request->request->get('token'))) {
+            return $this->render('/user/create.html.twig', [
+                'url' => $this->getParameter('app.avatar_bucket_url'),
+                'avatars' => $this->getAvatars(),
+                'message' => 'error csrf',
+            ]);
         }
 
         $content = $request->request;
-        $username = $content->get('username');
-        $email = $content->get('email');
-        $plainPassword = $content->get('password');
+        $username = trim((string) $content->get('username'));
+        $email = trim((string) $content->get('email'));
+        $plainPassword = (string) $content->get('password');
         $avatar = $content->get('avatar');
+
+        $allowedAvatars = $this->getAllowedAvatarNames();
+        if (null !== $avatar && !in_array($avatar, $allowedAvatars, true)) {
+            return $this->render('/user/create.html.twig', [
+                'url' => $this->getParameter('app.avatar_bucket_url'),
+                'avatars' => $this->getAvatars(),
+                'message' => 'Avatar inválido',
+            ]);
+        }
+
         $user = new User();
         $user->setEmail($email);
         $user->setUsername($username);
         $user->setPlainPassword($plainPassword);
         $user->setAvatar($avatar);
+
         $errors = $validator->validate($user);
-        if(count($errors) > 0) {
-            $errorsString = (string)$errors;
-            return $this->json(['message'=>$errorsString]);
+        if (count($errors) > 0) {
+            return $this->render('/user/create.html.twig', [
+                'url' => $this->getParameter('app.avatar_bucket_url'),
+                'avatars' => $this->getAvatars(),
+                'message' => $errors->get(0)->getMessage(),
+            ]);
         }
+
         $user->eraseCredentials();
 
         $hashedPassword = $hasher->hashPassword($user, $plainPassword);
         $user->setPassword($hashedPassword);
         $entityManager = $doctrine->getManager();
         $entityManager->persist($user);
-        $entityManager->flush();
-        
-        return $this->render('user/login.html.twig',['error'=>null,'message'=>'usuário criado']);
-        
+
+        try {
+            $entityManager->flush();
+        } catch (UniqueConstraintViolationException) {
+            return $this->render('/user/create.html.twig', [
+                'url' => $this->getParameter('app.avatar_bucket_url'),
+                'avatars' => $this->getAvatars(),
+                'message' => 'Este email ou nome de usuário já está em uso',
+            ]);
+        }
+
+        return $this->redirectToRoute('app_auth_login');
     }
 
-    
-    #[Route('/users',methods:['PUT'], name: 'app_user_update')]
-    public function update(Request $request, UserPasswordHasherInterface $hasher, UserRepository $userRepository)
+    #[Route('/users/update', methods:['POST'], name: 'app_user_update')]
+    #[IsGranted('ROLE_USER')]
+    public function update(Request $request, UserPasswordHasherInterface $hasher, ValidatorInterface $validator, UserRepository $userRepository)
     {
+        if (!$this->isCsrfTokenValid('user.update', $request->request->get('token'))) {
+            return $this->redirectToRoute('app_user');
+        }
+
         $content = $request->request;
-        $email = $content->get('email');
-        $plainPassword = $content->get('password');
+        $email = trim((string) $content->get('email'));
+        $plainPassword = (string) $content->get('password');
         $avatar = $content->get('avatar');
 
         $user = $this->getUser();
-        
-        $user = $userRepository->findOneBy(['email'=>$user->getUserIdentifier()]); 
+
+        $allowedAvatars = $this->getAllowedAvatarNames();
+        if (null !== $avatar && !in_array($avatar, $allowedAvatars, true)) {
+            return $this->redirectToRoute('app_user');
+        }
+
         $user->setEmail($email);
         $user->setAvatar($avatar);
 
-        if($plainPassword) {
-            $hashedPassword = $hasher->hashPassword($user, $plainPassword);
-            $user->setPassword($hashedPassword);
+        if ($plainPassword) {
+            $user->setPlainPassword($plainPassword);
         }
 
-        $userRepository->add($user, true);
+        $errors = $validator->validate($user);
+        if (count($errors) > 0) {
+            return $this->redirectToRoute('app_user');
+        }
 
-        return $this->redirect('/user');
-        
+        if ($plainPassword) {
+            $user->setPassword($hasher->hashPassword($user, $plainPassword));
+        }
+
+        try {
+            $userRepository->add($user, true);
+        } catch (UniqueConstraintViolationException) {
+            return $this->redirectToRoute('app_user');
+        }
+
+        return $this->redirectToRoute('app_user');
     }
 }

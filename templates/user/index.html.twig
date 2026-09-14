@@ -15,8 +15,8 @@
             <h3>{{ user.username }}</h3>
         </div>
         <img class="p-10" src="{{url}}{{user.getAvatar}}"></img>
-        <form class="form" action="/users" method="PUT">
-            <input type="hidden" name="token" value="{{ csrf_token('user.store') }}"/>
+        <form class="form" action="/users/update" method="POST">
+            <input type="hidden" name="token" value="{{ csrf_token('user.update') }}"/>
             <input type="hidden" name="user_id" value="{{ user.id }}"/>
             <div>
                 <label for=""> {{ user.username }}</label><br>

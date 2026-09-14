@@ -9,10 +9,14 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Doctrine\DBAL\Types\Types;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: 'users')]
 #[ORM\HasLifecycleCallbacks]
+#[Assert\UniqueEntity(fields: ['email'], message: 'Este email já está em uso.')]
+#[Assert\UniqueEntity(fields: ['username'], message: 'Este nome de usuário já está em uso.')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     use TimeStamp;
@@ -35,7 +39,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $password = null;
     
     
-    #[Assert\Length(min:4, max:127)]
+    #[Assert\Length(min: 8, max: 127)]
+    #[Assert\PasswordStrength(minScore: Assert\PasswordStrength::STRENGTH_MEDIUM)]
     private ?string $plainPassword = null;
 
     #[ORM\Column(length: 180, unique: true)]
@@ -50,6 +55,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(nullable:true)]
     private ?string $avatar = null;
+
+    #[ORM\Column(type: Types::BOOLEAN)]
+    private bool $enabled = true;
     
     public function __construct()
     {
@@ -182,5 +190,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             return true;
         }
         return false;
+    }
+
+    public function isEnabled(): bool
+    {
+        return $this->enabled;
+    }
+
+    public function setEnabled(bool $enabled): self
+    {
+        $this->enabled = $enabled;
+
+        return $this;
     }
 }

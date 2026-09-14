@@ -11,37 +11,36 @@ import './styles/app.css';
 // start the Stimulus application
 import './bootstrap';
 
-document.getElementById("boldButton").addEventListener("click", function(){
+function wrapSelection(tag) {
     var textArea = document.getElementById("text");
-    textArea.value += '[b][/b]'; 
+    if (!textArea) { return; }
+    var start = textArea.selectionStart;
     var end = textArea.selectionEnd;
+    var selected = textArea.value.substring(start, end);
+    var snippet = (tag === 'url') ? '[url=]' + selected + '[/url]' : '[' + tag + ']' + selected + '[/' + tag + ']';
+    textArea.value = textArea.value.substring(0, start) + snippet + textArea.value.substring(end);
+    var cursor = (tag === 'url') ? start + 5 : start + tag.length + 1;
     textArea.focus();
-    textArea.selectionEnd= end - 4;
-});
+    textArea.selectionStart = cursor;
+    textArea.selectionEnd = cursor + selected.length;
+}
 
-document.getElementById("italicButton").addEventListener("click", function(){
-    var textArea = document.getElementById("text");
-    textArea.value += '[i][/i]'; 
-    var end = textArea.selectionEnd;
-    textArea.focus();
-    textArea.selectionEnd= end - 4;
-});
+var boldButton = document.getElementById("boldButton");
+if (boldButton) {
+    boldButton.addEventListener("click", function () { wrapSelection("b"); });
+}
 
-document.getElementById("underlineButton").addEventListener("click", function(){
-    var textArea = document.getElementById("text");
-    textArea.value += '[u][/u]'; 
-    var end = textArea.selectionEnd;
-    textArea.focus();
-    textArea.selectionEnd= end - 4;
-});
+var italicButton = document.getElementById("italicButton");
+if (italicButton) {
+    italicButton.addEventListener("click", function () { wrapSelection("i"); });
+}
 
-document.getElementById("linkButton").addEventListener("click", function(){
-    var textArea = document.getElementById("text");
-    textArea.value += '[url=][/url]'; 
-    var end = textArea.selectionEnd;
-    textArea.focus();
-    textArea.selectionEnd= end - 7;
+var underlineButton = document.getElementById("underlineButton");
+if (underlineButton) {
+    underlineButton.addEventListener("click", function () { wrapSelection("u"); });
+}
 
-});
-
-
+var linkButton = document.getElementById("linkButton");
+if (linkButton) {
+    linkButton.addEventListener("click", function () { wrapSelection("url"); });
+}

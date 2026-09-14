@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 use App\Service\BbCode;
 use App\Entity\Post;
 use DateTime;
-
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class PostController extends AbstractController
 {
@@ -26,18 +26,28 @@ class PostController extends AbstractController
     }
 
     #[Route('/post.store', name: 'app_post_store')]
-    public function store(Request $request, 
+    #[IsGranted('ROLE_USER')]
+    public function store(Request $request,
                             ValidatorInterface $validator,
-                            TopicRepository $topicRepository, 
+                            TopicRepository $topicRepository,
                             PostRepository $postRepository,
                             BbCode $bbCode)
     {
+        if (!$this->isCsrfTokenValid('post.store', $request->request->get('token'))) {
+            return new Response('CSRF inválido', Response::HTTP_BAD_REQUEST);
+        }
+
         $content = $request->request->get('content');
         $topic_id = $request->request->get('topic_id');
-        $topic = $topicRepository->findOneBy(['id'=>$topic_id]);
+        $topic = $topicRepository->findOneBy(['id' => $topic_id]);
+
+        if (!$topic) {
+            return new Response('Tópico inválido', Response::HTTP_BAD_REQUEST);
+        }
+
         $user = $this->getUser();
-    
-        $htmlContent = $bbCode->codeToHtml($content);
+
+        $htmlContent = $bbCode->codeToHtml((string) $content);
 
         $post = new Post();
         $post->setUser($user);
@@ -45,45 +55,90 @@ class PostController extends AbstractController
         $post->setContent($htmlContent);
 
         $errors = $validator->validate($post);
-        if (count($errors)>0) {
-            return new Response('todo post.store error');
+        if (count($errors) > 0) {
+            return new Response('Dados do post inválidos', Response::HTTP_BAD_REQUEST);
         }
-    
+
         $postRepository->add($post, true);
         $now = new DateTime();
         $topic->setUpdatedAt($now);
         $topicRepository->add($topic, true);
 
-        return $this->redirect('/topic/'.$topic_id);
+        return $this->redirect('/topic/' . $topic_id);
     }
 
     #[Route('/post/{id}', methods:['GET'], name: 'app_post_edit')]
-    public function edit(int $id, PostRepository $postRepository)
+    #[IsGranted('ROLE_USER')]
+    public function edit(int $id, PostRepository $postRepository, BbCode $bbCode)
     {
-        $post = $postRepository->findOneBy(['id'=>$id]);
-        if($post->getUser()->getUserIdentifier() != $this->getUser()->getUserIdentifier()) {
+        $post = $postRepository->findOneBy(['id' => $id]);
+        if (!$post) {
+            throw $this->createNotFoundException('Post não encontrado');
+        }
+        if ($post->getUser()->getId() !== $this->getUser()->getId()) {
             return new Response('OPS!');
         }
-        return $this->render('post/index.html.twig',['post'=>$post]);
+        return $this->render('post/index.html.twig', [
+            'post' => $post,
+            'bbcode' => $bbCode->htmlToCode((string) $post->getContent()),
+        ]);
     }
 
-    #[Route('/post/{id}', methods:['DELETE'], name: 'app_post_delete')]
+    #[Route('/post.update', methods:['POST'], name: 'app_post_update')]
+    #[IsGranted('ROLE_USER')]
+    public function update(Request $request, PostRepository $postRepository, BbCode $bbCode, ValidatorInterface $validator)
+    {
+        if (!$this->isCsrfTokenValid('post.update', $request->request->get('token'))) {
+            return new Response('CSRF inválido', Response::HTTP_BAD_REQUEST);
+        }
+
+        $post_id = $request->request->get('post_id');
+        $post = $postRepository->findOneBy(['id' => $post_id]);
+
+        if (!$post) {
+            throw $this->createNotFoundException('Post não encontrado');
+        }
+
+        if ($post->getUser()->getId() !== $this->getUser()->getId()) {
+            return new Response('Operação não permitida', Response::HTTP_FORBIDDEN);
+        }
+
+        $content = $request->request->get('content');
+        $post->setContent($bbCode->codeToHtml((string) $content));
+
+        $errors = $validator->validate($post);
+        if (count($errors) > 0) {
+            return new Response('Dados do post inválidos', Response::HTTP_BAD_REQUEST);
+        }
+
+        $postRepository->add($post, true);
+
+        return $this->redirect('/topic/' . $post->getTopic()->getId());
+    }
+
+    #[Route('/post.delete', methods:['POST'], name: 'app_post_delete')]
+    #[IsGranted('ROLE_USER')]
     public function delete(Request $request, PostRepository $postRepository)
     {
-        $post_id = $request->get('post_id');
-        $post = $postRepository->findOneBy(['id'=>$post_id]);
+        if (!$this->isCsrfTokenValid('post.delete', $request->request->get('token'))) {
+            return new Response('CSRF inválido', Response::HTTP_BAD_REQUEST);
+        }
+
+        $post_id = $request->request->get('post_id');
+        $post = $postRepository->findOneBy(['id' => $post_id]);
+
+        if (!$post) {
+            throw $this->createNotFoundException('Post não encontrado');
+        }
+
         $topic_id = $post->getTopic()->getId();
-        
-        if($post->getUser()->getUserIdentifier() != $this->getUser()->getUserIdentifier()) {
-            return new Response('Operação não permitida');
+
+        if ($post->getUser()->getId() !== $this->getUser()->getId()) {
+            return new Response('Operação não permitida', Response::HTTP_FORBIDDEN);
         }
 
         $postRepository->remove($post, true);
 
-        return $this->render('/topic/'.$topic_id);
-
+        return $this->redirect('/topic/' . $topic_id);
     }
-    
-
-    
 }

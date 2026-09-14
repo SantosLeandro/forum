@@ -1,12 +1,77 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello AdminController!{% endblock %}
+{% block title %}Gerenciar usuários{% endblock %}
 
 {% block body %}
-    <div class="rounded-border form-regular">
-        {% foreach( user in users ) %}
-            <span> {{ user.getUsername }} </span>
-        {% endif %}
+    <a href="/admin">← Voltar ao painel</a>
+    <div class="rounded-border">
+        <div class="title-header">
+            Gerenciar usuários
+        </div>
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Usuário</th>
+                    <th>Email</th>
+                    <th>Papéis</th>
+                    <th>Data de cadastro</th>
+                    <th>Status</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr class="{{ cycle(['bg_even', 'bg_odd'], loop.index0) }}">
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.getRoles|join(', ') }}</td>
+                    <td>{{ user.getCreatedAt|date('Y-m-d H:i') }}</td>
+                    <td>
+                        {% if user.enabled %}
+                            <span class="status-badge status-active">Ativo</span>
+                        {% else %}
+                            <span class="status-badge status-inactive">Inativo</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if app.user.id == user.id %}
+                            <em>(você)</em>
+                        {% else %}
+                            <form class="inline-form" action="/admin/users.toggle" method="POST">
+                                <input type="hidden" name="token" value="{{ csrf_token('admin.user.toggle') }}"/>
+                                <input type="hidden" name="user_id" value="{{ user.id }}"/>
+                                <input type="hidden" name="page" value="{{ page }}"/>
+                                {% if user.enabled %}
+                                    <input type="submit" value="Desativar">
+                                {% else %}
+                                    <input type="submit" value="Reativar">
+                                {% endif %}
+                            </form>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="7">Nenhum usuário encontrado.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
 
+    <div class="pagination">
+        {% if page > 1 %}
+            <a href="{{ path('app_admin_users', {'page': page - 1}) }}">← Anterior</a>
+        {% else %}
+            <span class="disabled">← Anterior</span>
+        {% endif %}
+        <span>Página {{ page }} de {{ maxPages }} ({{ total }} usuários)</span>
+        {% if page < maxPages %}
+            <a href="{{ path('app_admin_users', {'page': page + 1}) }}">Próxima →</a>
+        {% else %}
+            <span class="disabled">Próxima →</span>
+        {% endif %}
+    </div>
 {% endblock %}

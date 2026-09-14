@@ -1,18 +1,20 @@
-<div class="rounded-border">
-<form class="form" action="/topic.store" method="POST">
-    <div>
-    <h5> Novo Tópico </h5>
-    <input type="hidden" name="token" value="{{ csrf_token('topic.store') }}"/>
+<div class="form-panel">
+    <div class="form-panel-header">
+        Novo Tópico
+    </div>
+    <div class="form-panel-body">
+        <form class="form" action="/topic.store" method="POST">
+            <input type="hidden" name="token" value="{{ csrf_token('topic.store') }}"/>
+            <input type="hidden" name="forum_id" value={{ forum.getId }} />
+            <label class="form-label" for="title">Título</label>
+            <input id="title" type="text" name="title" placeholder="Digite o título do tópico">
 
-    {{ include('components/bb-buttons.html.twig') }}
-    <input type="hidden" name="forum_id" value={{ forum.getId }} />
-    <input type="text" name="title">
+            {{ include('components/bb-buttons.html.twig') }}
+
+            <label class="form-label" for="text">Conteúdo</label>
+            <textarea id="text" name="content" cols="30" rows="10" placeholder="Escreva aqui o conteúdo do tópico..."></textarea>
+
+            <input type="submit" value="Enviar">
+        </form>
     </div>
-    <div>
-    <textarea id="" name="content" cols="30" rows="10"></textarea>
-    </div>
-    <div>
-    <input type="submit" value="Enviar">
-    </div>
-</form>
 </div>
