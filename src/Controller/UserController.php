@@ -93,11 +93,20 @@ class UserController extends AbstractController
         $avatar = $content->get('avatar');
 
         $allowedAvatars = $this->getAllowedAvatarNames();
-        if (null !== $avatar && !in_array($avatar, $allowedAvatars, true)) {
+        if (null === $avatar) {
+            dump(['erro',$allowedAvatars]);
             return $this->render('/user/create.html.twig', [
                 'url' => $this->getParameter('app.avatar_bucket_url'),
                 'avatars' => $this->getAvatars(),
-                'message' => 'Avatar inválido',
+                'messages' => ['Selecione um avatar'],
+            ]);
+        }
+        if (!in_array($avatar, $allowedAvatars, true)) {
+             dump(['erro','not in allowed avatar']);
+            return $this->render('/user/create.html.twig', [
+                'url' => $this->getParameter('app.avatar_bucket_url'),
+                'avatars' => $this->getAvatars(),
+                'messages' => ['Avatar inválido'],
             ]);
         }
 
@@ -108,11 +117,22 @@ class UserController extends AbstractController
         $user->setAvatar($avatar);
 
         $errors = $validator->validate($user);
+
+        dump([
+            'errors' => array_map(
+                fn ($error) => $error->getMessage(),
+                iterator_to_array($errors)
+            ),
+        ]);
+
         if (count($errors) > 0) {
             return $this->render('/user/create.html.twig', [
                 'url' => $this->getParameter('app.avatar_bucket_url'),
                 'avatars' => $this->getAvatars(),
-                'message' => $errors->get(0)->getMessage(),
+                'messages' => array_map(
+                    fn ($error) => $error->getMessage(),
+                    iterator_to_array($errors)
+                ),
             ]);
         }
 
@@ -141,7 +161,7 @@ class UserController extends AbstractController
     public function update(Request $request, UserPasswordHasherInterface $hasher, ValidatorInterface $validator, UserRepository $userRepository)
     {
         if (!$this->isCsrfTokenValid('user.update', $request->request->get('token'))) {
-            return $this->redirectToRoute('app_user');
+            return $this->renderProfile('error csrf');
         }
 
         $content = $request->request;
@@ -152,8 +172,8 @@ class UserController extends AbstractController
         $user = $this->getUser();
 
         $allowedAvatars = $this->getAllowedAvatarNames();
-        if (null !== $avatar && !in_array($avatar, $allowedAvatars, true)) {
-            return $this->redirectToRoute('app_user');
+        if (null === $avatar || !in_array($avatar, $allowedAvatars, true)) {
+            return $this->renderProfile('Selecione um avatar válido');
         }
 
         $user->setEmail($email);
@@ -165,7 +185,7 @@ class UserController extends AbstractController
 
         $errors = $validator->validate($user);
         if (count($errors) > 0) {
-            return $this->redirectToRoute('app_user');
+            return $this->renderProfile($errors->get(0)->getMessage());
         }
 
         if ($plainPassword) {
@@ -175,9 +195,19 @@ class UserController extends AbstractController
         try {
             $userRepository->add($user, true);
         } catch (UniqueConstraintViolationException) {
-            return $this->redirectToRoute('app_user');
+            return $this->renderProfile('Este email ou nome de usuário já está em uso');
         }
 
         return $this->redirectToRoute('app_user');
+    }
+
+    private function renderProfile(string $message): Response
+    {
+        return $this->render('/user/index.html.twig', [
+            'user' => $this->getUser(),
+            'url' => $this->getParameter('app.avatar_bucket_url'),
+            'avatars' => $this->getAvatars(),
+            'message' => $message,
+        ]);
     }
 }

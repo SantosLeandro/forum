@@ -40,7 +40,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     
     
     #[Assert\Length(min: 8, max: 127)]
-    #[Assert\PasswordStrength(minScore: Assert\PasswordStrength::STRENGTH_MEDIUM)]
     private ?string $plainPassword = null;
 
     #[ORM\Column(length: 180, unique: true)]
