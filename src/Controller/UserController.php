@@ -26,7 +26,7 @@ class UserController extends AbstractController
         foreach ($finder as $file) {
             $avatars[] = [
                 'name' => $file->getFilename(),
-                'url' => $this->getParameter('app.avatar_bucket_url') . '/' . $file->getFilename(),
+                'url' => $this->getParameter('app.avatar_bucket_url') . $file->getFilename(),
             ];
         }
         return $avatars;
@@ -92,9 +92,9 @@ class UserController extends AbstractController
         $plainPassword = (string) $content->get('password');
         $avatar = $content->get('avatar');
 
+
         $allowedAvatars = $this->getAllowedAvatarNames();
         if (null === $avatar) {
-            dump(['erro',$allowedAvatars]);
             return $this->render('/user/create.html.twig', [
                 'url' => $this->getParameter('app.avatar_bucket_url'),
                 'avatars' => $this->getAvatars(),
@@ -102,7 +102,6 @@ class UserController extends AbstractController
             ]);
         }
         if (!in_array($avatar, $allowedAvatars, true)) {
-             dump(['erro','not in allowed avatar']);
             return $this->render('/user/create.html.twig', [
                 'url' => $this->getParameter('app.avatar_bucket_url'),
                 'avatars' => $this->getAvatars(),
@@ -117,13 +116,6 @@ class UserController extends AbstractController
         $user->setAvatar($avatar);
 
         $errors = $validator->validate($user);
-
-        dump([
-            'errors' => array_map(
-                fn ($error) => $error->getMessage(),
-                iterator_to_array($errors)
-            ),
-        ]);
 
         if (count($errors) > 0) {
             return $this->render('/user/create.html.twig', [
