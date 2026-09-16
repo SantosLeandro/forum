@@ -655,3 +655,132 @@ input {
 .pagination .disabled {
     color: #999;
 }
+
+.auth-page {
+    display: flex;
+    justify-content: center;
+    padding: 20px 0;
+}
+
+.form-panel-auth {
+    width: 100%;
+    max-width: 520px;
+}
+
+.form-panel-header i {
+    margin-right: 6px;
+}
+
+.form-create-acc input[type=text],
+.form-create-acc input[type=email],
+.form-create-acc input[type=password] {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 8px;
+    border: 1px solid #bbb;
+    border-radius: 3px;
+    font-family: inherit;
+    font-size: 13px;
+}
+
+.form-create-acc input[type=text]:focus,
+.form-create-acc input[type=email]:focus,
+.form-create-acc input[type=password]:focus {
+    outline: none;
+    border-color: #ED9A00;
+    box-shadow: 0 0 0 2px rgba(237, 154, 0, 0.25);
+}
+
+.form-create-acc .form-label {
+    display: block;
+    font-weight: bold;
+    margin: 10px 0 4px 0;
+}
+
+.form-create-acc .form-label i {
+    color: #ED9A00;
+    margin-right: 4px;
+}
+
+.form-create-acc input[type=submit] {
+    margin-top: 14px;
+    border-radius: 3px;
+    padding: 8px 24px;
+    height: auto;
+    cursor: pointer;
+    width: auto;
+}
+
+.form-create-acc input[type=submit]:hover {
+    background-image: linear-gradient(#ffb13d, #e08a00);
+}
+
+.form-errors {
+    background: #fdecea;
+    border: 1px solid #c62828;
+    border-radius: 3px;
+    color: #a51e1e;
+    margin-bottom: 12px;
+    padding: 10px 12px;
+}
+
+.form-errors p {
+    margin: 0;
+    padding: 2px 0;
+}
+
+.form-hint {
+    display: none;
+    margin-top: 4px;
+    font-weight: bold;
+}
+
+.form-hint.visible {
+    display: inline-block;
+}
+
+.form-hint.hint-error {
+    color: #c62828;
+}
+
+.form-hint.hint-ok {
+    color: #2e7d32;
+}
+
+.avatar-option {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px;
+    border: 2px solid transparent;
+    border-radius: 4px;
+    cursor: pointer;
+    background: #f3f3f3;
+    transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.avatar-option:hover {
+    background: #ffd27a;
+    border-color: #ED9A00;
+}
+
+.avatar-option.selected {
+    background: #ffd27a;
+    border-color: #ED9A00;
+    box-shadow: 0 0 0 2px rgba(237, 154, 0, 0.35);
+}
+
+.avatar-option img {
+    width: 60px;
+    height: 60px;
+}
+
+.avatar-option input[type=radio] {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.avatar-list {
+    align-items: stretch;
+}

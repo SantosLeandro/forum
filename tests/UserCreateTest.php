@@ -40,6 +40,7 @@ class UserCreateTest extends WebTestCase
             'email' => 'novo@example.com',
             'username' => 'novo_usuario',
             'password' => 'SenhaForte123',
+            'password_confirmation' => 'SenhaForte123',
             'avatar' => $this->firstAvatar(),
         ]);
 
@@ -60,6 +61,7 @@ class UserCreateTest extends WebTestCase
             'email' => 'semavatar@example.com',
             'username' => 'sem_avatar',
             'password' => 'SenhaForte123',
+            'password_confirmation' => 'SenhaForte123',
         ]);
 
         $this->assertResponseIsSuccessful();
@@ -73,6 +75,7 @@ class UserCreateTest extends WebTestCase
             'email' => 'avatarinv@example.com',
             'username' => 'avatar_inv',
             'password' => 'SenhaForte123',
+            'password_confirmation' => 'SenhaForte123',
             'avatar' => '../../etc/passwd',
         ]);
 
@@ -87,6 +90,7 @@ class UserCreateTest extends WebTestCase
             'email' => 'curta@example.com',
             'username' => 'senha_curta',
             'password' => 'abc123',
+            'password_confirmation' => 'abc123',
             'avatar' => $this->firstAvatar(),
         ]);
 
@@ -95,6 +99,26 @@ class UserCreateTest extends WebTestCase
         $user = static::getContainer()->get(EntityManagerInterface::class)
             ->getRepository(User::class)
             ->findOneBy(['email' => 'curta@example.com']);
+        $this->assertNull($user);
+    }
+
+    public function testSubmitWithMismatchedPasswordsShowsMessage(): void
+    {
+        $this->client->request('POST', '/users', [
+            'token' => $this->csrfToken(),
+            'email' => 'divergente@example.com',
+            'username' => 'senhas_divergentes',
+            'password' => 'SenhaForte123',
+            'password_confirmation' => 'OutraSenha456',
+            'avatar' => $this->firstAvatar(),
+        ]);
+
+        $this->assertResponseIsSuccessful();
+        $this->assertStringContainsString('As senhas não coincidem', $this->client->getResponse()->getContent());
+
+        $user = static::getContainer()->get(EntityManagerInterface::class)
+            ->getRepository(User::class)
+            ->findOneBy(['email' => 'divergente@example.com']);
         $this->assertNull($user);
     }
 
@@ -113,6 +137,7 @@ class UserCreateTest extends WebTestCase
             'email' => 'dup@example.com',
             'username' => 'outro_nome',
             'password' => 'SenhaForte123',
+            'password_confirmation' => 'SenhaForte123',
             'avatar' => $this->firstAvatar(),
         ]);
 

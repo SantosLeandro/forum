@@ -1,53 +1,81 @@
 {% extends "./base.html.twig" %}
 
-{% block title %}Sign In{% endblock %}
+{% block title %}Criar conta{% endblock %}
 {% block head %}
     {{ parent() }}
-    <style type="text/css">
-        .important { color: #336699; }
-    </style>
 {% endblock %}
 {% block body %}
-    <div class="rounded-border create-acc-grid p-10">
-        <div> </div>
-        <div>
-            <h1>Novo usuário</h1>
-            {% if messages is defined %}
-                <div class="form-errors">
-                    {% for message in messages %}
+    <div class="auth-page">
+        <div class="form-panel form-panel-auth">
+            <div class="form-panel-header">
+                <i class='bx bxs-user-plus'></i> Criar Conta
+            </div>
+            <div class="form-panel-body">
+                {% if message is defined and message %}
+                    <div class="form-errors">
                         <p>{{ message }}</p>
-                    {% endfor %}
-                </div>
-            {% endif %}
-            <form class="form-create-acc" action="/users" method="POST">
-                <input type="hidden" name="token" value="{{ csrf_token('user.store') }}"/>
-                <div>
-                    <input id="email" type="email" name="email" placeholder="email@email.com">
-                </div>
-                <div>
-                    <input id="username" type="text" name="username" placeholder="username">
-                </div>
-                <div>
-                    <input id="password" type="password" name="password" placeholder="password">
-                </div>
-                <div>
-                    <input id="password-reapeat" type="password" name="" placeholder="password">
-                </div>
-                <h4> Avatar: </h4>
-                <div class="avatar-list">
-                {% for avatar in avatars %}
-                    <div class="bg-even text-center">
-                        <input name="avatar" type="radio" value="{{avatar.name}}" ><br>
-                        <img src="{{url}}{{avatar.name}}"></img>
-                        </input>
                     </div>
-                {% endfor %}
-                </div>
-                <div>
-                    <input type="submit" value="Submit">
-                </div>
-            </form>
+                {% endif %}
+                {% if messages is defined %}
+                    <div class="form-errors">
+                        {% for msg in messages %}
+                            <p>{{ msg }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                <form class="form form-create-acc" action="/users" method="POST">
+                    <input type="hidden" name="token" value="{{ csrf_token('user.store') }}"/>
+                    <div>
+                        <label class="form-label" for="username">
+                            <i class='bx bxs-user'></i> Nome de usuário
+                        </label>
+                        <input id="username" type="text" name="username"
+                               placeholder="Escolha um nome de usuário"
+                               value="{{ username is defined ? username : '' }}"
+                               autocomplete="username" required>
+                    </div>
+                    <div>
+                        <label class="form-label" for="email">
+                            <i class='bx bxs-envelope'></i> E-mail
+                        </label>
+                        <input id="email" type="email" name="email"
+                               placeholder="exemplo@email.com"
+                               value="{{ email is defined ? email : '' }}"
+                               autocomplete="email" required>
+                    </div>
+                    <div>
+                        <label class="form-label" for="password">
+                            <i class='bx bxs-lock-alt'></i> Senha
+                        </label>
+                        <input id="password" type="password" name="password"
+                               placeholder="Mínimo de 8 caracteres"
+                               autocomplete="new-password" required>
+                    </div>
+                    <div>
+                        <label class="form-label" for="password-confirmation">
+                            <i class='bx bxs-lock-alt'></i> Confirme a senha
+                        </label>
+                        <input id="password-confirmation" type="password" name="password_confirmation"
+                               placeholder="Digite a senha novamente"
+                               autocomplete="new-password" required>
+                        <span id="password-hint" class="form-hint"></span>
+                    </div>
+                    <div>
+                        <span class="form-label"> Avatar </span>
+                        <div class="avatar-list" id="avatar-list">
+                            {% for avatar in avatars %}
+                                <label class="avatar-option">
+                                    <input name="avatar" type="radio" value="{{ avatar.name }}" {% if selected_avatar is defined and avatar.name == selected_avatar %}checked{% endif %}>
+                                    <img src="{{ url }}{{ avatar.name }}" alt="{{ avatar.name }}">
+                                </label>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div>
+                        <input type="submit" value="Criar conta">
+                    </div>
+                </form>
+            </div>
         </div>
-        <div></div>
     </div>
 {% endblock %}

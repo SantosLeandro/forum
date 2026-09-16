@@ -44,3 +44,38 @@ var linkButton = document.getElementById("linkButton");
 if (linkButton) {
     linkButton.addEventListener("click", function () { wrapSelection("url"); });
 }
+
+function togglePasswordHint() {
+    var password = document.getElementById("password");
+    var confirmation = document.getElementById("password-confirmation");
+    var hint = document.getElementById("password-hint");
+    if (!password || !confirmation || !hint) { return; }
+    if (confirmation.value.length === 0) {
+        hint.classList.remove("visible", "hint-error", "hint-ok");
+        return;
+    }
+    var match = password.value === confirmation.value;
+    hint.textContent = match ? "Senhas coincidem." : "As senhas não coincidem.";
+    hint.classList.add("visible");
+    hint.classList.toggle("hint-error", !match);
+    hint.classList.toggle("hint-ok", match);
+}
+
+var passwordField = document.getElementById("password");
+var confirmationField = document.getElementById("password-confirmation");
+if (passwordField && confirmationField) {
+    passwordField.addEventListener("input", togglePasswordHint);
+    confirmationField.addEventListener("input", togglePasswordHint);
+}
+
+var avatarRadios = document.querySelectorAll("#avatar-list input[name=avatar]");
+avatarRadios.forEach(function (radio) {
+    radio.addEventListener("change", function () {
+        avatarRadios.forEach(function (r) {
+            r.closest(".avatar-option").classList.toggle("selected", r.checked);
+        });
+    });
+    if (radio.checked) {
+        radio.closest(".avatar-option").classList.add("selected");
+    }
+});

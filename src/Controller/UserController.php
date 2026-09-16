@@ -79,33 +79,36 @@ class UserController extends AbstractController
                             ManagerRegistry $doctrine)
     {
         if (!$this->isCsrfTokenValid('user.store', $request->request->get('token'))) {
-            return $this->render('/user/create.html.twig', [
-                'url' => $this->getParameter('app.avatar_bucket_url'),
-                'avatars' => $this->getAvatars(),
-                'message' => 'error csrf',
-            ]);
+            return $this->renderCreate('Sessão expirada. Tente novamente.');
         }
 
         $content = $request->request;
         $username = trim((string) $content->get('username'));
         $email = trim((string) $content->get('email'));
         $plainPassword = (string) $content->get('password');
+        $passwordConfirmation = (string) $content->get('password_confirmation');
         $avatar = $content->get('avatar');
 
+        if ($plainPassword !== $passwordConfirmation) {
+            return $this->renderCreate('As senhas não coincidem', [
+                'username' => $username,
+                'email' => $email,
+                'selected_avatar' => $avatar,
+            ]);
+        }
 
         $allowedAvatars = $this->getAllowedAvatarNames();
         if (null === $avatar) {
-            return $this->render('/user/create.html.twig', [
-                'url' => $this->getParameter('app.avatar_bucket_url'),
-                'avatars' => $this->getAvatars(),
-                'messages' => ['Selecione um avatar'],
+            return $this->renderCreate('Selecione um avatar', [
+                'username' => $username,
+                'email' => $email,
             ]);
         }
         if (!in_array($avatar, $allowedAvatars, true)) {
-            return $this->render('/user/create.html.twig', [
-                'url' => $this->getParameter('app.avatar_bucket_url'),
-                'avatars' => $this->getAvatars(),
-                'messages' => ['Avatar inválido'],
+            return $this->renderCreate('Avatar inválido', [
+                'username' => $username,
+                'email' => $email,
+                'selected_avatar' => $avatar,
             ]);
         }
 
@@ -118,13 +121,13 @@ class UserController extends AbstractController
         $errors = $validator->validate($user);
 
         if (count($errors) > 0) {
-            return $this->render('/user/create.html.twig', [
-                'url' => $this->getParameter('app.avatar_bucket_url'),
-                'avatars' => $this->getAvatars(),
-                'messages' => array_map(
-                    fn ($error) => $error->getMessage(),
-                    iterator_to_array($errors)
-                ),
+            return $this->renderCreate(array_map(
+                fn ($error) => $error->getMessage(),
+                iterator_to_array($errors)
+            ), [
+                'username' => $username,
+                'email' => $email,
+                'selected_avatar' => $avatar,
             ]);
         }
 
@@ -138,14 +141,33 @@ class UserController extends AbstractController
         try {
             $entityManager->flush();
         } catch (UniqueConstraintViolationException) {
-            return $this->render('/user/create.html.twig', [
-                'url' => $this->getParameter('app.avatar_bucket_url'),
-                'avatars' => $this->getAvatars(),
-                'message' => 'Este email ou nome de usuário já está em uso',
+            return $this->renderCreate('Este email ou nome de usuário já está em uso', [
+                'username' => $username,
+                'email' => $email,
+                'selected_avatar' => $avatar,
             ]);
         }
 
         return $this->redirectToRoute('app_auth_login');
+    }
+
+    /**
+     * @param string|string[] $error
+     */
+    private function renderCreate(string|array $error, array $extra = []): Response
+    {
+        $data = [
+            'url' => $this->getParameter('app.avatar_bucket_url'),
+            'avatars' => $this->getAvatars(),
+        ];
+
+        if (is_array($error)) {
+            $data['messages'] = $error;
+        } else {
+            $data['message'] = $error;
+        }
+
+        return $this->render('/user/create.html.twig', array_merge($data, $extra));
     }
 
     #[Route('/users/update', methods:['POST'], name: 'app_user_update')]
