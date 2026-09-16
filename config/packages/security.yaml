@@ -21,6 +21,9 @@ security:
             form_login:
               login_path: app_auth_login
               check_path: app_auth_login
+              enable_csrf: true
+              csrf_token_id: login
+              csrf_parameter: token
 
             login_throttling:
               max_attempts: 5

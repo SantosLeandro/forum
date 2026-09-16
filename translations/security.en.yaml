@@ -1,0 +1,3 @@
+'Invalid credentials.': 'E-mail ou senha inválidos.'
+'Invalid CSRF token.': 'Sessão expirada. Tente novamente.'
+'Too many failed login attempts, please try again later.': 'Muitas tentativas de login. Tente novamente mais tarde.'

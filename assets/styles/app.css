@@ -196,14 +196,6 @@ body {
   .form-create-acc input {
     width: 100%;
   }
-
-  .form-login {
-    width: 100%;
-  }
-
-  .create-acc-grid {
-    display: block;
-  }
 }
 
 .avatar-list {
@@ -215,10 +207,6 @@ body {
     grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
     column-gap: 6px;
     margin-bottom: 10px;
-}
-
-.create-acc-grid {
-    display: grid;
 }
 
 input {
@@ -475,20 +463,6 @@ input {
     width:100%;
     box-sizing: border-box;
 }
-
-.login {
-    height: 100vh;   
-}
-
-.form-login {
-    width: 300px;
-}
-
-.form-login input label {
-    width: 100%;
-    display: inline-block
-}
-
 
 .button-submit, input[type=submit] {
     background-image: linear-gradient(#ED9A00, #C17500);
@@ -783,4 +757,12 @@ input {
 
 .avatar-list {
     align-items: stretch;
+}
+
+.auth-switch {
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px solid #ddd;
+    font-size: 13px;
+    text-align: center;
 }

@@ -22,9 +22,12 @@ class AuthController extends AbstractController
     public function login(Request $request, AuthenticationUtils $authenticationUtils)
     {
         if ($request->isMethod('POST') && !$this->isCsrfTokenValid('login', $request->request->get('token'))) {
-            return $this->render('/auth/index.html.twig', ['message' => 'error csrf']);
+            return $this->render('/auth/index.html.twig', ['message' => 'Sessão expirada. Tente novamente.']);
         }
-        return $this->render('/auth/index.html.twig', ['error' => $authenticationUtils->getLastAuthenticationError()]);
+        return $this->render('/auth/index.html.twig', [
+            'error' => $authenticationUtils->getLastAuthenticationError(),
+            'last_username' => $authenticationUtils->getLastUsername(),
+        ]);
     }
 
     #[Route('/logout', name: 'app_user_logout')]
