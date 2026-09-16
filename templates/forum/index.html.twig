@@ -14,7 +14,7 @@
         </div>
 
     </div>
-    <div class="topic-item bg-gray font-bold">
+    <div class="topic-item bg-gray font-bold grid-header">
         <div>Tópico</div>
         <div class="text-center">Autor</div>
         <div class="text-center">Respostas</div>
@@ -24,19 +24,19 @@
 
     {% for topic in topics %}
         <div class="topic-item topic-row {{ cycle(['bg_odd', 'bg_even'], loop.index0) }}">
-            <div>
+            <div data-label="Tópico">
                  <a class="forum-link" href="/topic/{{topic.id}}"> {{ topic.title }} </a>
             </div>
-            <div class="text-center">
+            <div class="text-center" data-label="Autor">
                 <span>{{ topic.getUser.username }} </span>
             </div>
-            <div class="text-center"> {{ topic.getPosts|length}} </div>
-            <div class="text-center votes-color"> 
+            <div class="text-center" data-label="Respostas"> {{ topic.getPosts|length}} </div>
+            <div class="text-center votes-color" data-label="Nota"> 
                 <i class='bx bxs-star'></i>
                 <i class='bx bxs-star'></i>
                 <i class='bx bxs-star-half'></i> 
             </div>
-            <div>
+            <div data-label="Última mensagem">
                 {% if topic.getLastPost|length %}
                 <span> {{ topic.getUpdatedAt|date('Y-m-d H:i')}} <br>
                     Por: {{ topic.getLastPost.getUser.username }} </span>

@@ -109,7 +109,7 @@ body {
     font-size: 13px;
     display: grid;
     grid-template-areas: "navbar" "content" "footer";
-    grid-template-rows: 50px 1fr auto;
+    grid-template-rows: auto 1fr auto;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
 
 }
@@ -120,16 +120,100 @@ body {
   }
   body {
     max-width: 100%;
-  } 
+  }
+
+  .nav-toggle-label {
+    display: block;
+    cursor: pointer;
+    color: white;
+    padding: 14px 16px;
+    font-size: 24px;
+    line-height: 1;
+    margin-left: auto;
+  }
+
+  .nav-menu {
+    display: none;
+    width: 100%;
+    flex-flow: column wrap;
+    order: 1;
+  }
+
+  .nav-menu.nav-right {
+    margin-left: 0;
+  }
+
+  .nav-menu li a {
+    text-align: left;
+    padding: 12px 16px;
+  }
+
+  .nav-toggle:checked ~ .nav-menu {
+    display: flex;
+  }
+
+  .grid-header {
+    display: none;
+  }
+
+  .forum-grid,
+  .topic-item {
+    grid-template-columns: 1fr;
+  }
+
+  .forum-grid > div,
+  .topic-item > div {
+    border-left: 0;
+  }
+
+  .forum-grid > div::before,
+  .topic-item > div::before {
+    content: attr(data-label);
+    display: block;
+    font-weight: bold;
+    margin-bottom: 2px;
+  }
+
+  .post-item {
+    grid-template-columns: 80px auto;
+  }
+
+  .post-user-avatar {
+    width: 60px;
+    height: 60px;
+  }
+
+  .avatar-list {
+    width: 100%;
+  }
+
+  .admin-table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  .form-create-acc input {
+    width: 100%;
+  }
+
+  .form-login {
+    width: 100%;
+  }
+
+  .create-acc-grid {
+    display: block;
+  }
 }
 
 .avatar-list {
     display: grid;
-    width: 500px;
-    overflow-x: scroll;
-    overflow-y: scroll;
-    height: 400px;
-    grid-template-columns: auto auto auto auto auto;
+    width: 100%;
+    max-height: 400px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    column-gap: 6px;
     margin-bottom: 10px;
 }
 
@@ -321,21 +405,28 @@ textarea {
     overflow: hidden;
     margin: 0px;
     padding: 0;
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
 }
 
-.nav-bar ul {
+.nav-menu {
     list-style-type: none;
     margin: 0;
     padding: 0;
-    overflow: hidden;
+    display: flex;
+    flex-flow: row wrap;
 }
 
-.nav-bar li {
+.nav-menu.nav-right {
+    margin-left: auto;
+}
+
+.nav-menu li {
    list-style-type: none;
-   float: left;
 }
 
-.nav-bar li a {
+.nav-menu li a {
     display: block;
     color: white;
     text-align: center;
@@ -350,6 +441,14 @@ textarea {
 
 .nav-bar a:hover {
     background: #111;
+}
+
+.nav-toggle {
+    display: none;
+}
+
+.nav-toggle-label {
+    display: none;
 }
 
 input {

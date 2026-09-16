@@ -1,10 +1,12 @@
 <nav class="nav-bar">
-    <ul>
+    <input type="checkbox" id="nav-toggle" class="nav-toggle">
+    <ul class="nav-menu">
         <li>
             <a href='/'> <i class='bx bxs-home' ></i> Home </a>
         </li>
-        {% if app.user %}
-            <div class="float-right">
+    </ul>
+    {% if app.user %}
+        <ul class="nav-menu nav-right">
             <li>
                 <a href='/users'> <i class='bx bxs-user'></i> Perfil </a>
             </li>
@@ -16,17 +18,18 @@
             <li>
                 <a href='/logout'> Logout </a>
             </li>
-            </div>
-        {% else %}
-            <div class="float-right">
+        </ul>
+    {% else %}
+        <ul class="nav-menu nav-right">
             <li>
                 <a href='/login'> Login </a>
             </li>
             <li>
                 <a href='/user.create'> Criar conta </a>
             </li>
-            </div>
+        </ul>
     {% endif %}
-    </ul>
+    <label for="nav-toggle" class="nav-toggle-label">
+        <i class='bx bx-menu'></i>
+    </label>
 </nav>
-
