@@ -94,6 +94,25 @@ class UserUpdateTest extends WebTestCase
         $this->assertStringContainsString('já está em uso', $this->client->getResponse()->getContent());
     }
 
+    public function testUpdateWithMismatchedPasswordsShowsMessage(): void
+    {
+        $this->client->request('POST', '/users/update', [
+            'token' => $this->csrfToken(),
+            'email' => self::EMAIL,
+            'password' => 'NovaSenha123',
+            'password_confirmation' => 'OutraSenha456',
+            'avatar' => $this->firstAvatar(),
+        ]);
+
+        $this->assertResponseIsSuccessful();
+        $this->assertStringContainsString('As senhas não coincidem', $this->client->getResponse()->getContent());
+
+        $em = static::getContainer()->get(EntityManagerInterface::class);
+        $user = $em->getRepository(User::class)->findOneBy(['username' => 'perfil_user']);
+        $hasher = static::getContainer()->get(UserPasswordHasherInterface::class);
+        $this->assertTrue($hasher->isPasswordValid($user, self::PASS));
+    }
+
     public function testValidUpdateRedirectsAndPersists(): void
     {
         $this->client->request('POST', '/users/update', [

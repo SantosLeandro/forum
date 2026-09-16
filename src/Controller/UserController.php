@@ -181,9 +181,14 @@ class UserController extends AbstractController
         $content = $request->request;
         $email = trim((string) $content->get('email'));
         $plainPassword = (string) $content->get('password');
+        $passwordConfirmation = (string) $content->get('password_confirmation');
         $avatar = $content->get('avatar');
 
         $user = $this->getUser();
+
+        if ($plainPassword !== '' && $plainPassword !== $passwordConfirmation) {
+            return $this->renderProfile('As senhas não coincidem');
+        }
 
         $allowedAvatars = $this->getAllowedAvatarNames();
         if (null === $avatar || !in_array($avatar, $allowedAvatars, true)) {

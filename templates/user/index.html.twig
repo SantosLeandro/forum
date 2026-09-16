@@ -1,57 +1,104 @@
 {% extends "./base.html.twig" %}
 
-
 {% block title %}Perfil {{ user.username }}{% endblock %}
 {% block head %}
     {{ parent() }}
 {% endblock %}
 {% block body %}
-    <div class="">
-    {% if message is defined %}
-    <h3> {{ message }} </h3>
-    {% endif %}
-    <div class="rounded-border form-regular">
-        <div class="title-header">
-            <h3>{{ user.username }}</h3>
+    {% set roleLabels = {
+        'ROLE_ADMIN': 'Administrador',
+        'ROLE_MODERATOR': 'Moderador',
+        'ROLE_USER': 'Usuário'
+    } %}
+    <div class="form-panel form-panel-profile">
+        <div class="form-panel-header">
+            <i class='bx bxs-user'></i> Perfil de {{ user.username }}
         </div>
-        <img class="p-10" src="{{url}}{{user.getAvatar}}"></img>
-        <form class="form" action="/users/update" method="POST">
-            <input type="hidden" name="token" value="{{ csrf_token('user.update') }}"/>
-            <input type="hidden" name="user_id" value="{{ user.id }}"/>
-            <div>
-                <label for=""> {{ user.username }}</label><br>
-                <span> Posts: {{ user.getPosts()|length }} </span><br>
-                <span> Tópicos: {{ user.getTopics()|length }} </span><br>
-                <span> Usuário desde: {{ user.getCreatedAt|date('Y-m-d') }}</span><br>
-                <span> Atualizado em: {{ user.getUpdatedAt|date('Y-m-d') }}</span><br>
-                <span> Tipo: {{ user.getRoles[0] }}</span>
-            </div>
-            {% if app.user.id == user.id %}
-            <div>
-                <label for="">Email</label><br>
-                <input id="" type="email" name="email" value="{{ user.email }}">
-            </div>
-            <div>
-                <label for="">Password</label><br>
-                <input id="" type="password" name="password">
-            </div>
-            <div>
-                <label> Avatar </label><br>
-                <input id="" type="text" name="avatar" value="{{ user.avatar }}">
-                <div class="avatar-list">
-                {% for avatar in avatars %}
-                    <div>
-                        <input name="avatar" type="radio" value="{{avatar.name}}" >
-                        <img src="{{url}}{{avatar.name}}"></img>
-                        </input>
-                    </div>
-                {% endfor %}
+        <div class="form-panel-body">
+            <div class="profile-user">
+                <img class="profile-avatar" src="{{ url }}{{ user.getAvatar }}" alt="Avatar de {{ user.username }}">
+                <div class="profile-info">
+                    <span class="profile-name">{{ user.username }}</span>
+                    <span class="profile-badge status-badge 
+                        {% if 'ROLE_ADMIN' in user.getRoles %}status-admin
+                        {% elseif 'ROLE_MODERATOR' in user.getRoles %}status-mod
+                        {% else %}status-user{% endif %}">
+                        {{ roleLabels[user.getRoles[0]] is defined ? roleLabels[user.getRoles[0]] : user.getRoles[0] }}
+                    </span>
                 </div>
-            <div>
-                <input type="submit" value="Atualizar">
-            </div> 
+            </div>
+            <div class="profile-stats">
+                <div class="profile-stat">
+                    <div class="profile-stat-value">{{ user.getPosts()|length }}</div>
+                    <div class="profile-stat-label">Posts</div>
+                </div>
+                <div class="profile-stat">
+                    <div class="profile-stat-value">{{ user.getTopics()|length }}</div>
+                    <div class="profile-stat-label">Tópicos</div>
+                </div>
+                <div class="profile-stat">
+                    <div class="profile-stat-value">{{ user.getCreatedAt|date('Y-m-d') }}</div>
+                    <div class="profile-stat-label">Membro desde</div>
+                </div>
+                <div class="profile-stat">
+                    <div class="profile-stat-value">{{ user.getUpdatedAt|date('Y-m-d') }}</div>
+                    <div class="profile-stat-label">Última atividade</div>
+                </div>
+            </div>
+
+            {% if app.user and app.user.id == user.id %}
+                <div class="profile-edit">
+                    <div class="profile-edit-title">
+                        <i class='bx bxs-edit-alt'></i> Editar perfil
+                    </div>
+                    {% if message is defined and message %}
+                        <div class="form-errors">
+                            <p>{{ message }}</p>
+                        </div>
+                    {% endif %}
+                    <form class="form form-create-acc" action="/users/update" method="POST">
+                        <input type="hidden" name="token" value="{{ csrf_token('user.update') }}"/>
+                        <input type="hidden" name="user_id" value="{{ user.id }}"/>
+                        <div>
+                            <label class="form-label" for="email">
+                                <i class='bx bxs-envelope'></i> E-mail
+                            </label>
+                            <input id="email" type="email" name="email" value="{{ user.email }}" required>
+                        </div>
+                        <div>
+                            <label class="form-label" for="password">
+                                <i class='bx bxs-lock-alt'></i> Senha
+                            </label>
+                            <input id="password" type="password" name="password"
+                                   placeholder="Deixe em branco para manter a atual"
+                                   autocomplete="new-password">
+                        </div>
+                        <div>
+                            <label class="form-label" for="password-confirmation">
+                                <i class='bx bxs-lock-alt'></i> Confirme a senha
+                            </label>
+                            <input id="password-confirmation" type="password" name="password_confirmation"
+                                   placeholder="Digite a nova senha novamente"
+                                   autocomplete="new-password">
+                            <span id="password-hint" class="form-hint"></span>
+                        </div>
+                        <div>
+                            <span class="form-label"> Avatar </span>
+                            <div class="avatar-list" id="avatar-list">
+                                {% for avatar in avatars %}
+                                    <label class="avatar-option">
+                                        <input name="avatar" type="radio" value="{{ avatar.name }}" {% if avatar.name == user.getAvatar %}checked{% endif %}>
+                                        <img src="{{ url }}{{ avatar.name }}" alt="{{ avatar.name }}">
+                                    </label>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div>
+                            <input type="submit" value="Salvar alterações">
+                        </div>
+                    </form>
+                </div>
             {% endif %}
-        </form>
-    </div>
+        </div>
     </div>
 {% endblock %}

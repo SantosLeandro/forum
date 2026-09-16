@@ -193,6 +193,15 @@ body {
     white-space: nowrap;
   }
 
+  .profile-user {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .profile-info {
+    align-items: center;
+  }
+
   .form-create-acc input {
     width: 100%;
   }
@@ -765,4 +774,96 @@ input {
     border-top: 1px solid #ddd;
     font-size: 13px;
     text-align: center;
+}
+
+.form-panel-profile {
+    width: 100%;
+    max-width: 720px;
+    margin: 0 auto;
+}
+
+.profile-user {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.profile-avatar {
+    width: 120px;
+    height: 120px;
+    border: 2px solid #333;
+    border-radius: 4px;
+    background: #eee;
+    flex-shrink: 0;
+}
+
+.profile-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.profile-name {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.profile-badge {
+    font-size: 11px;
+}
+
+.status-admin {
+    background: #333;
+}
+
+.status-mod {
+    background: #1565c0;
+}
+
+.status-user {
+    background: #2e7d32;
+}
+
+.profile-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 8px;
+    margin: 16px 0 4px;
+}
+
+.profile-stat {
+    background: #f3f3f3;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 10px 8px;
+    text-align: center;
+}
+
+.profile-stat-value {
+    font-size: 17px;
+    font-weight: bold;
+    color: #EF9100;
+}
+
+.profile-stat-label {
+    font-size: 11px;
+    color: #666;
+}
+
+.profile-edit {
+    margin-top: 18px;
+    padding-top: 16px;
+    border-top: 1px solid #ddd;
+}
+
+.profile-edit-title {
+    font-size: 14px;
+    font-weight: bold;
+    color: #ED9A00;
+    margin-bottom: 8px;
+}
+
+.profile-edit-title i {
+    margin-right: 4px;
 }
